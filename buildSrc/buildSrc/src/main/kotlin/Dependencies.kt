@@ -5,7 +5,7 @@ object Dependencies {
     }
 
     object Android {
-        private const val gradlePluginVersion = "8.0.0-alpha11"
+        private const val gradlePluginVersion = "8.1.0-alpha01"
         const val gradlePlugin = "com.android.tools.build:gradle:$gradlePluginVersion"
 
         private const val activityComposeVersion = "1.6.1"
