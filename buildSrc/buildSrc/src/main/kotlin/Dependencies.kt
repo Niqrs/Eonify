@@ -18,10 +18,12 @@ object Dependencies {
     object Compose {
         private const val version = "1.4.0-alpha04"
         private const val material3Version = "1.1.0-alpha04"
+        private const val navigationVersion = "2.6.0-alpha04"
 
         const val animation = "androidx.compose.animation:animation:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val material3 = "androidx.compose.material3:material3:$material3Version"
+        const val navigation = "androidx.navigation:navigation-compose:$navigationVersion"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val tooling = "androidx.compose.ui:ui-tooling:$version"
