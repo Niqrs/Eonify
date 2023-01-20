@@ -13,7 +13,10 @@ import com.niqr.auth.ui.screens.signup.signupScreen
 const val AuthGraphRoutePattern = "auth"
 
 fun NavController.navigateToAuthGraph() {
-    this.navigate(AuthGraphRoutePattern)
+    this.navigate(AuthGraphRoutePattern) {
+        popUpTo(0)
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.authGraph(navController: NavController) {

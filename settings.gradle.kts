@@ -23,9 +23,8 @@ include(":auth:domain")
 // PROFILE
 include(":profile:ui")
 // SPLASH
-include(":splash:gg")
+include(":greeting:ui")
 //CORE
 include(":core:core")
 include(":core:ui")
 include(":core:utils")
-include(":splash:ui")

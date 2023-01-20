@@ -50,6 +50,7 @@ android {
 
 dependencies {
     implementation(project(":auth:ui"))
+    implementation(project(":greeting:ui"))
 
 
     implementation(Dependencies.Android.coreKtx)
