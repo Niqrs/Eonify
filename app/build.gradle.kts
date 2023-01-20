@@ -58,6 +58,7 @@ dependencies {
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.tooling)
     implementation(Dependencies.Compose.material3)
+    implementation(Dependencies.Compose.navigation)
 
     testImplementation(Dependencies.Testing.junit4)
     androidTestImplementation(Dependencies.Testing.junit4)

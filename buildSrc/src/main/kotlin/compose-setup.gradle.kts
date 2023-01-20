@@ -21,6 +21,7 @@ kotlin {
 
 dependencies {
 
+    implementation(Dependencies.Compose.navigation)
     implementation(Dependencies.Compose.material3)
     implementation(Dependencies.Compose.runtime)
     implementation(Dependencies.Compose.tooling)
