@@ -30,6 +30,13 @@ object Dependencies {
         const val icons = "androidx.compose.material:material-icons-core:$version"
     }
 
+    object Accompanist {
+        private const val version = "0.29.0-alpha"
+
+        const val pager = "com.google.accompanist:accompanist-pager:$version"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$version"
+    }
+
     object Testing {
         const val junit4 = "junit:junit:4.13.2"
         const val junitAndroidExt = "androidx.test.ext:junit:1.1.5"
