@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = ProjectConfig.namespace("splash.ui")
 }
+
+dependencies {
+    implementation(project(":core:ui"))
+}
