@@ -1,4 +1,4 @@
-package com.niqr.eonify.ui.theme
+package com.niqr.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
 

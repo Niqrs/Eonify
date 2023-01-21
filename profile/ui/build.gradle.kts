@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = ProjectConfig.namespace("profile.ui")
 }
+
+dependencies {
+    implementation(project(":core:ui"))
+}
