@@ -29,23 +29,26 @@ internal fun NavGraphBuilder.entryScreen(
 
         EntryScreen(
             uiState = uiState,
+            onPageChange = { page ->
+                uiState = uiState.copy(
+                    selectedPage = page
+                )
+            },
             onNavigateNext = {
-                if (uiState.isLastEntry()) {
+                if (uiState.selectedPage == uiState.pages.lastIndex) {
                     onNavigateNext()
                 } else {
-                    println(uiState.entry)
                     uiState = uiState.copy(
-                        entry = entries[uiState.entry.id + 1]
+                        selectedPage = uiState.selectedPage + 1
                     )
-                    println(uiState.entry)
                 }
             },
             onNavigateBack = {
-                if (!uiState.isFirstEntry()) {
-                    uiState = uiState.copy(
-                        entry = entries[uiState.entry.id - 1]
-                    )
-                }
+//                if (uiState.selectedPage != uiState.pages.lastIndex) {
+//                    uiState = uiState.copy(
+//                        selectedPage = uiState.selectedPage - 1
+//                    )
+//                }
             }
         )
     }

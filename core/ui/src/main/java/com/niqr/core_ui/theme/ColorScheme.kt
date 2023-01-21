@@ -14,7 +14,7 @@ internal val LightColorScheme = EonifyColorScheme(
     divider = Gray20,
 
     textPrimaryHeader = Primary50,
-    header = Gray90,
+    textHeader = Gray90,
     textBody = Gray70,
     textContrast = Gray90,
     textMediumContrast = Gray80,
@@ -37,7 +37,7 @@ internal val DarkColorScheme = EonifyColorScheme(
     divider = Gray40,
 
     textPrimaryHeader = Primary50,
-    header = Gray5,
+    textHeader = Gray5,
     textBody = Gray30,
     textContrast = Gray5,
     textMediumContrast = Gray10,
@@ -60,7 +60,7 @@ data class EonifyColorScheme(
     val divider: Color,
 
     val textPrimaryHeader: Color,
-    val header: Color,
+    val textHeader: Color,
     val textBody: Color,
     val textContrast: Color,
     val textMediumContrast: Color,
