@@ -1,21 +1,22 @@
 package com.niqr.splash.ui.screens.entry
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterStart
@@ -27,15 +28,17 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.splash.ui.screens.entry.EntryEvent.OnPageChange
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 internal fun EntryScreen(
+    uiEvent: Flow<EntryUiEvent>,
+    onEvent: (EntryEvent) -> Unit,
     uiState: EntryUiState,
-    onPageChange: (page: Int) -> Unit,
     onNavigateNext: () -> Unit,
-    onNavigateBack: () -> Unit
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -43,7 +46,27 @@ internal fun EntryScreen(
     LaunchedEffect(pagerState) {
         // Collect from the pager state a snapshotFlow reading the currentPage
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            onPageChange(page)
+            onEvent(OnPageChange(page))
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        uiEvent.collect() {
+            when(it) {
+                EntryUiEvent.OnNavigateNext -> onNavigateNext()
+                EntryUiEvent.OnNextPage -> {
+                    if (pagerState.canScrollForward)
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                }
+                EntryUiEvent.OnBackPage -> {
+                    if (pagerState.canScrollBackward)
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        }
+                }
+            }
         }
     }
 
@@ -58,11 +81,6 @@ internal fun EntryScreen(
             itemSpacing = 32.dp
         ) { pageNumber ->
             val page = uiState.pages[pageNumber]
-            Text(
-                text = "Page: $pageNumber",
-                modifier = Modifier
-                    .background(EonifyTheme.colorScheme.primaryContainer)
-            )
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -90,33 +108,31 @@ internal fun EntryScreen(
                 )
             }
         }
+
+        val interactionSource = remember { MutableInteractionSource() }
         Box(
             modifier = Modifier
                 .padding(
                     vertical = 36.dp,
-                    horizontal = 12.dp
+                    horizontal = 28.dp
                 )
-                .align(Alignment.BottomCenter)
+                .align(BottomCenter)
                 .fillMaxWidth(),
         ) {
             if (uiState.selectedPage != 0) {
-                Button(
+                Text(
+                    text = "Back",
                     modifier = Modifier
-                        .align(CenterStart),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = EonifyTheme.colorScheme.primary,
-                        contentColor = EonifyTheme.colorScheme.onPrimary
-                    ),
-                    onClick = {
-//                            onNavigateBack()
-                        if (pagerState.canScrollBackward)
-                            scope.launch {
-                                pagerState.animateScrollToPage(uiState.selectedPage - 1)
-                            }
-                    }
-                ) {
-                    Text(text = "Back")
-                }
+                        .align(CenterStart)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) {
+                            onEvent(EntryEvent.OnBackClick)
+                        },
+                    color = EonifyTheme.colorScheme.textBody,
+                    style = EonifyTheme.typography.bodyLarge
+                )
             }
             HorizontalPagerIndicator(
                 pagerState = pagerState,
@@ -129,26 +145,19 @@ internal fun EntryScreen(
                     .align(Center)
                     .padding(16.dp)
             )
-            Button(
+            Text(
+                text = "Next",
                 modifier = Modifier
-                    .align(CenterEnd),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = EonifyTheme.colorScheme.primary,
-                    contentColor = EonifyTheme.colorScheme.onPrimary
-                ),
-                onClick = {
-                    if (uiState.selectedPage == uiState.pages.lastIndex) {
-                        onNavigateNext()
-                    } else {
-                        if (pagerState.canScrollBackward)
-                            scope.launch {
-                                pagerState.animateScrollToPage(uiState.selectedPage + 1)
-                            }
-                    }
-                },
-            ) {
-                Text(text = "Next")
-            }
+                    .align(CenterEnd)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
+                        onEvent(EntryEvent.OnNextClick)
+                    },
+                color = EonifyTheme.colorScheme.textBody,
+                style = EonifyTheme.typography.bodyLarge
+            )
         }
     }
 }
