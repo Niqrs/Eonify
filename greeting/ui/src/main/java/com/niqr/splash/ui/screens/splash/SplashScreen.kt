@@ -16,11 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.splash.ui.R
 
 @Composable
 internal fun SplashScreen(
+    splashViewModel: SplashViewModel = hiltViewModel(),
     onSplashEnd: () -> Unit
 ) {
     Box(

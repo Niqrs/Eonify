@@ -15,6 +15,16 @@ object Dependencies {
         const val coreKtx = "androidx.core:core-ktx:$coreKtxVersion"
     }
 
+    object Hilt {
+        private const val version = "2.44.2"
+
+        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+
+        const val android = "com.google.dagger:hilt-android:$version"
+        const val androidCompiler = "com.google.dagger:hilt-android-compiler:$version" //kapt implementation
+        const val navigation = "androidx.hilt:hilt-navigation-compose:1.0.0"
+    }
+
     object Compose {
         private const val version = "1.4.0-alpha04"
         private const val material3Version = "1.1.0-alpha04"
