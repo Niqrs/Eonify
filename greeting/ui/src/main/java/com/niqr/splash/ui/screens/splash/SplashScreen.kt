@@ -8,23 +8,32 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.splash.ui.R
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun SplashScreen(
-    splashViewModel: SplashViewModel = hiltViewModel(),
+    uiEvent: Flow<SplashUiEvent>,
+    onEvent: (SplashEvent) -> Unit,
     onSplashEnd: () -> Unit
 ) {
+    LaunchedEffect(key1 = true) {
+        onEvent(SplashEvent.OnSplashLaunched)
+        uiEvent.collect {
+            when(it) {
+                SplashUiEvent.OnSplashEnd -> onSplashEnd()
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -48,17 +57,6 @@ internal fun SplashScreen(
                 color = EonifyTheme.colorScheme.textPrimaryHeader,
                 style = EonifyTheme.typography.headlineMedium,
             )
-        }
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = EonifyTheme.colorScheme.primary,
-                contentColor = EonifyTheme.colorScheme.onPrimary
-            ),
-            onClick = onSplashEnd
-        ) {
-            Text(text = "Next")
         }
     }
 }

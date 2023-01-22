@@ -1,5 +1,6 @@
 package com.niqr.splash.ui.screens.splash
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -19,7 +20,10 @@ internal fun NavGraphBuilder.splashScreen(
     composable(
         route = SplashGraphRoutePattern
     ) {
+        val viewModel: SplashViewModel = hiltViewModel()
         SplashScreen(
+            uiEvent = viewModel.uiEvent,
+            onEvent = viewModel::onEvent,
             onSplashEnd = onSplashEnd
         )
     }
