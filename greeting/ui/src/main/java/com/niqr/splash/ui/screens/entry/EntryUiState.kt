@@ -1,28 +1,37 @@
 package com.niqr.splash.ui.screens.entry
 
-internal data class EntryUiState(
-    val entry: Entry = entries.first()
+import com.niqr.splash.ui.R
+
+data class EntryUiState(
+    val pages: List<Page> = com.niqr.splash.ui.screens.entry.pages,
+    val selectedPage: Int = 0
 )
 
-internal fun EntryUiState.isFirstEntry() = this.entry == entries.first()
-internal fun EntryUiState.isLastEntry() = this.entry == entries.last()
-
-internal data class Entry(
-//    val image: Image???
-    val id: Int,
+data class Page(
+    val image: Int,
     val title: String,
     val description: String
 )
 
-internal val entries = listOf(
-    Entry(
-        id = 0,
-        title = "Title1",
-        description = "Description1"
+private val pages = listOf(
+    Page(
+        image = R.drawable.entry_first,
+        title = "The Simple Way to\nfind the best! \uD83D\uDC4C",
+        description = "Aenean eu lacinia ligula. Quisque eu risus erat. Aenean placerat sollicitudin lectus."
     ),
-    Entry(
-        id = 1,
-        title = "Title2",
-        description = "Description2"
-    )
+    Page(
+        image = R.drawable.entry_second,
+        title = "The Best Design\nStrategy! ✍️",
+        description = "Aenean eu lacinia ligula. Quisque eu risus erat. Aenean placerat sollicitudin lectus."
+    ),
+    Page(
+        image = R.drawable.entry_first,
+        title = "The Simple Way to\nfind the best! \uD83D\uDC4C",
+        description = "Aenean eu lacinia ligula. Quisque eu risus erat. Aenean placerat sollicitudin lectus."
+    ),
+    Page(
+        image = R.drawable.entry_second,
+        title = "The Best Design\nStrategy! ✍️",
+        description = "Aenean eu lacinia ligula. Quisque eu risus erat. Aenean placerat sollicitudin lectus."
+    ),
 )

@@ -9,4 +9,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+
+    implementation(Dependencies.Accompanist.pager)
+    implementation(Dependencies.Accompanist.pagerIndicators)
 }

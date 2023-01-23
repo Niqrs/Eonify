@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -32,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.Hilt.android)
+    kapt(Dependencies.Hilt.androidCompiler)
+
     testImplementation(Dependencies.Testing.junit4)
     androidTestImplementation(Dependencies.Testing.junitAndroidExt)
 }

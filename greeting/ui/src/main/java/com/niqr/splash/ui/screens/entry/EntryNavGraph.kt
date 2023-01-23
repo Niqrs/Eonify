@@ -1,9 +1,6 @@
 package com.niqr.splash.ui.screens.entry
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -23,30 +20,12 @@ internal fun NavGraphBuilder.entryScreen(
     composable(
         route = EntryGraphRoutePattern
     ) {
-        var uiState by remember {
-            mutableStateOf(EntryUiState())
-        }
-
+        val viewModel: EntryViewModel = hiltViewModel()
         EntryScreen(
-            uiState = uiState,
-            onNavigateNext = {
-                if (uiState.isLastEntry()) {
-                    onNavigateNext()
-                } else {
-                    println(uiState.entry)
-                    uiState = uiState.copy(
-                        entry = entries[uiState.entry.id + 1]
-                    )
-                    println(uiState.entry)
-                }
-            },
-            onNavigateBack = {
-                if (!uiState.isFirstEntry()) {
-                    uiState = uiState.copy(
-                        entry = entries[uiState.entry.id - 1]
-                    )
-                }
-            }
+            uiEvent = viewModel.uiEvent,
+            onEvent = viewModel::onEvent,
+            uiState = viewModel.uiState,
+            onNavigateNext = onNavigateNext
         )
     }
 }
