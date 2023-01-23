@@ -1,5 +1,6 @@
 package com.niqr.splash.ui.screens.entry
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,18 +20,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
-import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ScaleFactor
+import androidx.compose.ui.layout.lerp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.splash.ui.screens.entry.EntryEvent.OnPageChange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -51,7 +56,7 @@ internal fun EntryScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        uiEvent.collect() {
+        uiEvent.collect {
             when(it) {
                 EntryUiEvent.OnNavigateNext -> onNavigateNext()
                 EntryUiEvent.OnNextPage -> {
@@ -78,12 +83,35 @@ internal fun EntryScreen(
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize(),
-            itemSpacing = 32.dp
+            itemSpacing = 64.dp
         ) { pageNumber ->
             val page = uiState.pages[pageNumber]
             Column(
                 modifier = Modifier
                     .padding(16.dp)
+                    .graphicsLayer {
+                        // Calculate the absolute offset for the current page from the
+                        // scroll position. We use the absolute value which allows us to mirror
+                        // any effects for both directions
+                        val pageOffset = calculateCurrentOffsetForPage(pageNumber).absoluteValue
+
+                        // We animate the scaleX + scaleY, between 70% and 100%
+                        lerp(
+                            start = ScaleFactor(0.7f, 0.7f),
+                            stop = ScaleFactor(1f, 1f),
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale.scaleX
+                            scaleY = scale.scaleY
+                        }
+
+                        // We animate the alpha, between 0% and 100%
+                        alpha = lerp(
+                            start = ScaleFactor(-0.25f, -0.25f),
+                            stop = ScaleFactor(1f, 1f),
+                            fraction = 1f - pageOffset.coerceIn(-0.25f, 1f)
+                        ).scaleX
+                    }
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -94,12 +122,14 @@ internal fun EntryScreen(
                         .padding(24.dp)
                         .aspectRatio(1f)
                 )
+
                 Text(
                     text = page.title,
                     modifier = Modifier.padding(top = 32.dp),
                     color = EonifyTheme.colorScheme.textContrast,
                     style = EonifyTheme.typography.headlineSmall
                 )
+
                 Text(
                     text = page.description,
                     modifier = Modifier.padding(top = 32.dp),
@@ -119,12 +149,13 @@ internal fun EntryScreen(
                 .align(BottomCenter)
                 .fillMaxWidth(),
         ) {
-            if (uiState.selectedPage != 0) {
+            AnimatedVisibility(visible = uiState.selectedPage != 0) {
                 Text(
                     text = "Back",
                     modifier = Modifier
-                        .align(CenterStart)
+                        .align(Alignment.CenterStart)
                         .clickable(
+                            enabled = (uiState.selectedPage != 0 && pagerState.targetPage != 0),
                             interactionSource = interactionSource,
                             indication = null
                         ) {
@@ -134,6 +165,7 @@ internal fun EntryScreen(
                     style = EonifyTheme.typography.bodyLarge
                 )
             }
+
             HorizontalPagerIndicator(
                 pagerState = pagerState,
                 activeColor = EonifyTheme.colorScheme.primary,
@@ -145,6 +177,7 @@ internal fun EntryScreen(
                     .align(Center)
                     .padding(16.dp)
             )
+
             Text(
                 text = "Next",
                 modifier = Modifier
