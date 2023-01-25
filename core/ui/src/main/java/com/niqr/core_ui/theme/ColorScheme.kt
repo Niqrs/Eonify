@@ -16,6 +16,7 @@ internal val LightColorScheme = EonifyColorScheme(
     textPrimaryHeader = Primary50,
     textHeader = Gray90,
     textBody = Gray70,
+    textBodyOnSurface = Gray70,
     textContrast = Gray90,
     textMediumContrast = Gray80,
     textHint = Gray60,
@@ -23,7 +24,10 @@ internal val LightColorScheme = EonifyColorScheme(
 
     textFieldText = Gray90,
     textFieldHint = Gray60,
-    textFieldSelectedBorder = Primary50
+    textFieldDisabled = Gray70,
+    textFieldSelectedBorder = Primary50,
+
+    error = Color.Red
 )
 
 internal val DarkColorScheme = EonifyColorScheme(
@@ -39,6 +43,7 @@ internal val DarkColorScheme = EonifyColorScheme(
     textPrimaryHeader = Primary50,
     textHeader = Gray5,
     textBody = Gray30,
+    textBodyOnSurface = Gray10,
     textContrast = Gray5,
     textMediumContrast = Gray10,
     textHint = Gray40,
@@ -46,7 +51,10 @@ internal val DarkColorScheme = EonifyColorScheme(
 
     textFieldText = Gray5,
     textFieldHint = Gray40,
-    textFieldSelectedBorder = Primary40
+    textFieldDisabled = Gray20,
+    textFieldSelectedBorder = Primary40,
+
+    error = Color.Red
 )
 
 data class EonifyColorScheme(
@@ -62,6 +70,7 @@ data class EonifyColorScheme(
     val textPrimaryHeader: Color,
     val textHeader: Color,
     val textBody: Color,
+    val textBodyOnSurface: Color,
     val textContrast: Color,
     val textMediumContrast: Color,
     val textHint: Color,
@@ -70,10 +79,10 @@ data class EonifyColorScheme(
     val textFieldText: Color,
     val textFieldHint: Color,
 //    val textFieldBorder: Color,
-//    val textFieldDisabled: Color,
+    val textFieldDisabled: Color,
     val textFieldSelectedBorder: Color,
 
-//    val error: Color
+    val error: Color
 )
 
 internal val LocalColorScheme = staticCompositionLocalOf { LightColorScheme }
