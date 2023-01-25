@@ -45,7 +45,7 @@ fun HeaderIconContainer(
     heightDp = 200
 )
 @Composable
-fun HeaderIconContainerPreview() {
+private fun HeaderIconContainerPreview() {
     Box(
         modifier = Modifier
             .background(EonifyTheme.colorScheme.background)

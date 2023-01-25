@@ -53,7 +53,7 @@ fun AuthCheckbox(
     heightDp = 50
 )
 @Composable
-fun AuthCheckboxPreview() {
+private fun AuthCheckboxPreview() {
     val (checked, onCheckedChange) = remember {
         mutableStateOf(false)
     }
