@@ -24,7 +24,7 @@ import com.niqr.core_ui.theme.EonifyTheme
 fun HeaderIconContainer(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(20.dp),
-    backgroundColor: Color = EonifyTheme.colorScheme.surface,
+    backgroundColor: Color = EonifyTheme.colorScheme.primaryContainer,
     icon: @Composable () -> Unit
 ) {
     Box(
