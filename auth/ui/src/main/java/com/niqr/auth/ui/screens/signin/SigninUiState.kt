@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.signin
 
-internal data class SigninUiState(
-    val todo: String = "TODO: it is not actual state"
+data class SigninUiState(
+    val email: String = "",
+    val password: String = "",
+    val passwordVisible: Boolean = false
 )
