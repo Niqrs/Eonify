@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,7 @@ fun AuthTextField(
     error: Boolean = false,
     icon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = AuthTextFieldDefaults.textFieldShape(),
     colors: AuthTextFieldColors = AuthTextFieldDefaults.textFieldColors()
@@ -95,6 +97,7 @@ fun AuthTextField(
         textStyle = mergedTextStyle,
         interactionSource = interactionSource,
         singleLine = singleLine,
+        visualTransformation = visualTransformation,
         cursorBrush = SolidColor(contentColor),
         decorationBox = {
             Box(

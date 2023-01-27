@@ -1,5 +1,6 @@
 package com.niqr.auth.ui.screens.signin
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -15,9 +16,11 @@ internal fun NavGraphBuilder.signinScreen(
     onNavigateToSignup: () -> Unit
 ) {
     composable(SigninGraphRoutePattern) {
-        val uiState = SigninUiState()
+        val viewModel: SigninViewModel = hiltViewModel()
         SigninScreen(
-            uiState = uiState,
+            uiState = viewModel.uiState,
+            uiEvent = viewModel.uiEvent,
+            onEvent = viewModel::onEvent,
             onNavigateToForgot = onNavigateToForgot,
             onNavigateToSignup = onNavigateToSignup
         )

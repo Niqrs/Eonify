@@ -1,5 +1,9 @@
 package com.niqr.auth.ui.screens.signup
 
 data class SignupUiState(
-    val todo: String = "TODO: it is not actual state"
+    val name: String = "",
+    val email: String = "",
+    val password: String = "",
+    val passwordVisible: Boolean = false,
+    val agreedWithPolicy: Boolean = false
 )

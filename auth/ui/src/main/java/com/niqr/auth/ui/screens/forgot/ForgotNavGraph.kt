@@ -1,5 +1,6 @@
 package com.niqr.auth.ui.screens.forgot
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,10 +14,13 @@ internal fun NavGraphBuilder.forgotScreen(
     onNavigateBack: () -> Unit
 ) {
     composable(ForgotGraphRoutePattern) {
-        val uiState = ForgotUiState()
+        val viewModel: ForgotViewModel = hiltViewModel()
+
         ForgotScreen(
-            uiState = uiState,
-            onNavigateBack = onNavigateBack
+            uiState = viewModel.uiState,
+            uiEvent = viewModel.uiEvent,
+            onEvent = viewModel::onEvent,
+            onNavigateUp = onNavigateBack
         )
     }
 }
