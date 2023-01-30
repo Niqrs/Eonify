@@ -5,10 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-internal const val SplashGraphRoutePattern = "splash"
+internal const val SplashScreenRoutePattern = "splash"
 
 internal fun NavController.navigateToSplash() {
-    this.navigate(SplashGraphRoutePattern) {
+    this.navigate(SplashScreenRoutePattern) {
         popUpTo(0)
         launchSingleTop = true
     }
@@ -18,12 +18,12 @@ internal fun NavGraphBuilder.splashScreen(
     onSplashEnd: () -> Unit
 ) {
     composable(
-        route = SplashGraphRoutePattern
+        route = SplashScreenRoutePattern
     ) {
         val viewModel: SplashViewModel = hiltViewModel()
         SplashScreen(
             uiEvent = viewModel.uiEvent,
-            onEvent = viewModel::onEvent,
+            onAction = viewModel::onAction,
             onSplashEnd = onSplashEnd
         )
     }

@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.niqr.splash.ui.screens.entry.entryScreen
 import com.niqr.splash.ui.screens.entry.navigateToEntry
-import com.niqr.splash.ui.screens.splash.SplashGraphRoutePattern
+import com.niqr.splash.ui.screens.splash.SplashScreenRoutePattern
 import com.niqr.splash.ui.screens.splash.splashScreen
 
 const val GreetingGraphRoutePattern = "greeting"
@@ -23,7 +23,7 @@ fun NavGraphBuilder.greetingGraph(
 ) {
     navigation(
         route = GreetingGraphRoutePattern,
-        startDestination = SplashGraphRoutePattern
+        startDestination = SplashScreenRoutePattern
     ) {
         splashScreen(
             onSplashEnd = navController::navigateToEntry

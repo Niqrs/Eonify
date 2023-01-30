@@ -7,7 +7,7 @@ import com.niqr.auth.ui.screens.forgot.forgotScreen
 import com.niqr.auth.ui.screens.forgot.navigateToForgot
 import com.niqr.auth.ui.screens.signin.navigateToSignin
 import com.niqr.auth.ui.screens.signin.signinScreen
-import com.niqr.auth.ui.screens.signup.SignupGraphRoutePattern
+import com.niqr.auth.ui.screens.signup.SignupScreenRoutePattern
 import com.niqr.auth.ui.screens.signup.signupScreen
 
 const val AuthGraphRoutePattern = "auth"
@@ -19,9 +19,12 @@ fun NavController.navigateToAuthGraph() {
     }
 }
 
-fun NavGraphBuilder.authGraph(navController: NavController) {
+fun NavGraphBuilder.authGraph(
+    navController: NavController,
+    onSuccessAuth: () -> Unit
+) {
     navigation(
-        startDestination = SignupGraphRoutePattern,
+        startDestination = SignupScreenRoutePattern,
         route = AuthGraphRoutePattern
     ) {
         forgotScreen(
@@ -32,7 +35,8 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             onNavigateToSignup = navController::navigateUp
         )
         signupScreen(
-            onNavigateToSignin = navController::navigateToSignin
+            onNavigateToSignin = navController::navigateToSignin,
+            onSuccessAuth = onSuccessAuth
         )
     }
 }

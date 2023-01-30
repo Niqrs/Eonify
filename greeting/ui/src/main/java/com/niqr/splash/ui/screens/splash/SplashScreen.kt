@@ -21,15 +21,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun SplashScreen(
-    uiEvent: Flow<SplashUiEvent>,
-    onEvent: (SplashEvent) -> Unit,
+    uiEvent: Flow<SplashEvent>,
+    onAction: (SplashAction) -> Unit,
     onSplashEnd: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
-        onEvent(SplashEvent.OnSplashLaunched)
+        onAction(SplashAction.OnSplashLaunched)
         uiEvent.collect {
             when(it) {
-                SplashUiEvent.OnSplashEnd -> onSplashEnd()
+                SplashEvent.OnSplashEnd -> onSplashEnd()
             }
         }
     }

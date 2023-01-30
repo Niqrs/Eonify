@@ -32,7 +32,7 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.niqr.core_ui.theme.EonifyTheme
-import com.niqr.splash.ui.screens.entry.EntryEvent.OnPageChange
+import com.niqr.splash.ui.screens.entry.EntryAction.OnPageChange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -40,9 +40,9 @@ import kotlin.math.absoluteValue
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 internal fun EntryScreen(
-    uiEvent: Flow<EntryUiEvent>,
-    onEvent: (EntryEvent) -> Unit,
     uiState: EntryUiState,
+    uiEvent: Flow<EntryEvent>,
+    onAction: (EntryAction) -> Unit,
     onNavigateNext: () -> Unit,
 ) {
     val pagerState = rememberPagerState()
@@ -51,21 +51,21 @@ internal fun EntryScreen(
     LaunchedEffect(pagerState) {
         // Collect from the pager state a snapshotFlow reading the currentPage
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            onEvent(OnPageChange(page))
+            onAction(OnPageChange(page))
         }
     }
 
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when(it) {
-                EntryUiEvent.OnNavigateNext -> onNavigateNext()
-                EntryUiEvent.OnNextPage -> {
+                EntryEvent.OnNavigateNext -> onNavigateNext()
+                EntryEvent.OnNextPage -> {
                     if (pagerState.canScrollForward)
                         scope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)
                         }
                 }
-                EntryUiEvent.OnBackPage -> {
+                EntryEvent.OnBackPage -> {
                     if (pagerState.canScrollBackward)
                         scope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
@@ -159,7 +159,7 @@ internal fun EntryScreen(
                             interactionSource = interactionSource,
                             indication = null
                         ) {
-                            onEvent(EntryEvent.OnBackClick)
+                            onAction(EntryAction.OnBackClick)
                         },
                     color = EonifyTheme.colorScheme.textBody,
                     style = EonifyTheme.typography.bodyLarge
@@ -186,7 +186,7 @@ internal fun EntryScreen(
                         interactionSource = interactionSource,
                         indication = null
                     ) {
-                        onEvent(EntryEvent.OnNextClick)
+                        onAction(EntryAction.OnNextClick)
                     },
                 color = EonifyTheme.colorScheme.textBody,
                 style = EonifyTheme.typography.bodyLarge

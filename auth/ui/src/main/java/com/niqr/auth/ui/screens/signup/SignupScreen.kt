@@ -59,9 +59,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignupScreen(
     uiState: SignupUiState,
-    uiEvent: Flow<SignupUiEvent>,
-    onEvent: (SignupEvent) -> Unit,
-    onNavigateToSignin: () -> Unit
+    uiEvent: Flow<SignupEvent>,
+    onAction: (SignupAction) -> Unit,
+    onNavigateToSignin: () -> Unit,
+    onSuccess: () -> Unit
 ) {
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -69,13 +70,14 @@ fun SignupScreen(
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when (it) {
-                SignupUiEvent.NavigateToSignin -> onNavigateToSignin()
-                is SignupUiEvent.ShowSnackbar -> {
+                SignupEvent.NavigateToSignin -> onNavigateToSignin()
+                is SignupEvent.ShowSnackbar -> {
                     scope.launch {
                         if (snackbar.currentSnackbarData == null)
                             snackbar.showSnackbar(it.message)
                     }
                 }
+                SignupEvent.Success -> onSuccess()
             }
         }
     }
@@ -125,7 +127,7 @@ fun SignupScreen(
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 AuthWithButton(
-                    onClick = { onEvent(SignupEvent.OnSignupWithFacebook) },
+                    onClick = { onAction(SignupAction.OnSignupWithFacebook) },
                     text = "Facebook",
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -137,7 +139,7 @@ fun SignupScreen(
                     horizontalAlignment = Alignment.Start
                 )
                 AuthWithButton(
-                    onClick = { onEvent(SignupEvent.OnSignupWithGoogle) },
+                    onClick = { onAction(SignupAction.OnSignupWithGoogle) },
                     text = "Google",
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -167,21 +169,21 @@ fun SignupScreen(
 
             AuthTextField( // Name TextField
                 value = uiState.name,
-                onValueChange = { onEvent(SignupEvent.OnNameChange(it)) },
+                onValueChange = { onAction(SignupAction.OnNameChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Name"
             )
             Spacer(modifier = Modifier.height(16.dp))
             AuthTextField( // Email TextField
                 value = uiState.email,
-                onValueChange = { onEvent(SignupEvent.OnEmailChange(it)) },
+                onValueChange = { onAction(SignupAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(16.dp))
             AuthTextField( // Password TextField
                 value = uiState.password,
-                onValueChange = { onEvent(SignupEvent.OnPasswordChange(it)) },
+                onValueChange = { onAction(SignupAction.OnPasswordChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Password",
                 visualTransformation = if (uiState.passwordVisible) VisualTransformation.None
@@ -189,7 +191,7 @@ fun SignupScreen(
                 icon = {
                     IconButton(
                         onClick = {
-                            onEvent(SignupEvent.OnPasswordVisibilityChange(!uiState.passwordVisible))
+                            onAction(SignupAction.OnPasswordVisibilityChange(!uiState.passwordVisible))
                         }
                     ) {
                         AnimatedContent(
@@ -221,7 +223,7 @@ fun SignupScreen(
             ) {
                 AuthCheckbox(
                     checked = uiState.agreedWithPolicy,
-                    onCheckedChange = { onEvent(SignupEvent.OnAgreeWIthPolicyChange(it)) }
+                    onCheckedChange = { onAction(SignupAction.OnAgreeWIthPolicyChange(it)) }
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 ClickableText(
@@ -251,13 +253,13 @@ fun SignupScreen(
                         color = EonifyTheme.colorScheme.textMediumContrast,
                         textAlign = TextAlign.Start
                     ),
-                    onClick = { onEvent(SignupEvent.OnTermsAndPolicyClick) }
+                    onClick = { onAction(SignupAction.OnTermsAndPolicyClick) }
                 )
             }
             Spacer(modifier = Modifier.height(28.dp))
 
             AuthButton( // AuthButton
-                onClick = {onEvent(SignupEvent.OnCreateAccountClick) },
+                onClick = {onAction(SignupAction.OnCreateAccountClick) },
                 text = "Create Account",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -283,7 +285,7 @@ fun SignupScreen(
                     color = EonifyTheme.colorScheme.textMediumContrast,
                     textAlign = TextAlign.Start
                 ),
-                onClick = { onEvent(SignupEvent.OnNavigateToSignin) }
+                onClick = { onAction(SignupAction.OnNavigateToSignin) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }
@@ -300,8 +302,9 @@ private fun SignupScreenPreview() {
         SignupScreen(
             uiState = SignupUiState(),
             uiEvent = emptyFlow(),
-            onEvent = {},
-            onNavigateToSignin = {}
+            onAction = {},
+            onNavigateToSignin = {},
+            onSuccess = {}
         )
     }
 }

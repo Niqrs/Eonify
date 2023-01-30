@@ -15,19 +15,19 @@ class SplashViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private val _uiEvent = Channel<SplashUiEvent>()
+    private val _uiEvent = Channel<SplashEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: SplashEvent) {
+    fun onAction(event: SplashAction) {
         when(event) {
-            SplashEvent.OnSplashLaunched -> onSplashStarted()
+            SplashAction.OnSplashLaunched -> onSplashStarted()
         }
     }
 
     private fun onSplashStarted() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(2000)
-            _uiEvent.send(SplashUiEvent.OnSplashEnd)
+            _uiEvent.send(SplashEvent.OnSplashEnd)
         }
     }
 }

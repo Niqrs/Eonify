@@ -10,8 +10,11 @@ import androidx.navigation.compose.rememberNavController
 import com.niqr.auth.ui.authGraph
 import com.niqr.auth.ui.navigateToAuthGraph
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.profile.ui.navigateToProfileGraph
+import com.niqr.profile.ui.profileGraph
 import com.niqr.splash.ui.GreetingGraphRoutePattern
 import com.niqr.splash.ui.greetingGraph
+import com.niqr.splash.ui.navigateToGreetingGraph
 
 @Composable
 fun EonifyApp() {
@@ -32,7 +35,14 @@ fun EonifyApp() {
                 navController = navController,
                 onNavigateNext = navController::navigateToAuthGraph
             )
-            authGraph(navController)
+            authGraph(
+                navController = navController,
+                onSuccessAuth = navController::navigateToProfileGraph
+            )
+            profileGraph(
+                navController = navController,
+                onSignOut = navController::navigateToGreetingGraph
+            )
         }
     }
 }
