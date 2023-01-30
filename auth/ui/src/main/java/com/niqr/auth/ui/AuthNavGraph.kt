@@ -19,7 +19,10 @@ fun NavController.navigateToAuthGraph() {
     }
 }
 
-fun NavGraphBuilder.authGraph(navController: NavController) {
+fun NavGraphBuilder.authGraph(
+    navController: NavController,
+    onSuccessAuth: () -> Unit
+) {
     navigation(
         startDestination = SignupScreenRoutePattern,
         route = AuthGraphRoutePattern
@@ -32,7 +35,8 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             onNavigateToSignup = navController::navigateUp
         )
         signupScreen(
-            onNavigateToSignin = navController::navigateToSignin
+            onNavigateToSignin = navController::navigateToSignin,
+            onSuccessAuth = onSuccessAuth
         )
     }
 }

@@ -12,7 +12,8 @@ internal fun NavController.navigateToSignup() {
 }
 
 internal fun NavGraphBuilder.signupScreen(
-    onNavigateToSignin: () -> Unit
+    onNavigateToSignin: () -> Unit,
+    onSuccessAuth: () -> Unit
 ) {
     composable(
         route = SignupScreenRoutePattern
@@ -22,7 +23,8 @@ internal fun NavGraphBuilder.signupScreen(
             uiState = viewModel.uiState,
             uiEvent = viewModel.uiEvent,
             onAction = viewModel::onAction,
-            onNavigateToSignin = onNavigateToSignin
+            onNavigateToSignin = onNavigateToSignin,
+            onSuccess = onSuccessAuth
         )
     }
 }

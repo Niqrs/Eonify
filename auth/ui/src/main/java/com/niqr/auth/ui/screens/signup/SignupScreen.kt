@@ -61,7 +61,8 @@ fun SignupScreen(
     uiState: SignupUiState,
     uiEvent: Flow<SignupEvent>,
     onAction: (SignupAction) -> Unit,
-    onNavigateToSignin: () -> Unit
+    onNavigateToSignin: () -> Unit,
+    onSuccess: () -> Unit
 ) {
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -76,6 +77,7 @@ fun SignupScreen(
                             snackbar.showSnackbar(it.message)
                     }
                 }
+                SignupEvent.Success -> onSuccess()
             }
         }
     }
@@ -301,7 +303,8 @@ private fun SignupScreenPreview() {
             uiState = SignupUiState(),
             uiEvent = emptyFlow(),
             onAction = {},
-            onNavigateToSignin = {}
+            onNavigateToSignin = {},
+            onSuccess = {}
         )
     }
 }

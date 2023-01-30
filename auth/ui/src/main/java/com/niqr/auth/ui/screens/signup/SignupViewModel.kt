@@ -93,7 +93,8 @@ class SignupViewModel @Inject constructor(
     private fun onSignupWithGoogle() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SignupEvent.ShowSnackbar("Not yet implemented")
+//                SignupEvent.ShowSnackbar("Not yet implemented")
+                SignupEvent.Success
             )
         }
     }
