@@ -47,6 +47,19 @@ object Dependencies {
         const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$version"
     }
 
+    object Firebase {
+        private const val bomVersion = "31.2.0"
+
+        const val bom = "com.google.firebase:firebase-bom:$bomVersion"
+        const val auth = "com.google.firebase:firebase-auth-ktx"
+    }
+
+    object PlayServices {
+        private const val authVersion = "20.4.1"
+
+        const val auth = "com.google.android.gms:play-services-auth:$authVersion"
+    }
+
     object Testing {
         const val junit4 = "junit:junit:4.13.2"
         const val junitAndroidExt = "androidx.test.ext:junit:1.1.5"
