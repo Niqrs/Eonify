@@ -20,31 +20,31 @@ class SigninViewModel @Inject constructor(
     var uiState by mutableStateOf(SigninUiState())
         private set
 
-    private val _uiEvent = Channel<SigninUiEvent>()
+    private val _uiEvent = Channel<SigninEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: SigninEvent) {
+    fun onAction(event: SigninAction) {
         when(event) {
-            SigninEvent.OnNavigateToForgot -> onNavigateToForgot()
-            SigninEvent.OnNavigateToSignup -> onNavigateToSignup()
-            is SigninEvent.OnEmailChange -> onEmailChange(event.email)
-            is SigninEvent.OnPasswordChange -> onPasswordChange(event.password)
-            is SigninEvent.OnPasswordVisibilityChange -> onPasswordVisibilityChange(event.visible)
-            SigninEvent.OnSignupWithFacebook -> onSignupWithFacebook()
-            SigninEvent.OnSignupWithGoogle -> onSignupWithGoogle()
-            SigninEvent.OnLoginClick -> onLoginClick()
+            SigninAction.OnNavigateToForgot -> onNavigateToForgot()
+            SigninAction.OnNavigateToSignup -> onNavigateToSignup()
+            is SigninAction.OnEmailChange -> onEmailChange(event.email)
+            is SigninAction.OnPasswordChange -> onPasswordChange(event.password)
+            is SigninAction.OnPasswordVisibilityChange -> onPasswordVisibilityChange(event.visible)
+            SigninAction.OnSignupWithFacebook -> onSignupWithFacebook()
+            SigninAction.OnSignupWithGoogle -> onSignupWithGoogle()
+            SigninAction.OnLoginClick -> onLoginClick()
         }
     }
 
     private fun onNavigateToForgot() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(SigninUiEvent.NavigateToForgot)
+            _uiEvent.send(SigninEvent.NavigateToForgot)
         }
     }
 
     private fun onNavigateToSignup() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(SigninUiEvent.NavigateToSignup)
+            _uiEvent.send(SigninEvent.NavigateToSignup)
         }
     }
 
@@ -69,7 +69,7 @@ class SigninViewModel @Inject constructor(
     private fun onSignupWithFacebook() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SigninUiEvent.ShowSnackbar("Not yet implemented")
+                SigninEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -77,7 +77,7 @@ class SigninViewModel @Inject constructor(
     private fun onSignupWithGoogle() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SigninUiEvent.ShowSnackbar("Not yet implemented")
+                SigninEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -85,7 +85,7 @@ class SigninViewModel @Inject constructor(
     private fun onLoginClick() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SigninUiEvent.ShowSnackbar("Not yet implemented")
+                SigninEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }

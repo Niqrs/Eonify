@@ -20,27 +20,27 @@ class SignupViewModel @Inject constructor(
     var uiState by mutableStateOf(SignupUiState())
         private set
 
-    private val _uiEvent = Channel<SignupUiEvent>()
+    private val _uiEvent = Channel<SignupEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: SignupEvent) {
+    fun onAction(event: SignupAction) {
         when(event) {
-            SignupEvent.OnNavigateToSignin -> onNavigateToSignin()
-            is SignupEvent.OnNameChange -> onNameChange(event.name)
-            is SignupEvent.OnEmailChange -> onEmailChange(event.email)
-            is SignupEvent.OnPasswordChange -> onPasswordChange(event.password)
-            is SignupEvent.OnPasswordVisibilityChange -> onPasswordVisibilityChange(event.visible)
-            is SignupEvent.OnAgreeWIthPolicyChange -> onAgreeWIthPolicyChange(event.checked)
-            SignupEvent.OnTermsAndPolicyClick -> onTermsAndPolicyClick()
-            SignupEvent.OnSignupWithFacebook -> onSignupWithFacebook()
-            SignupEvent.OnSignupWithGoogle -> onSignupWithGoogle()
-            SignupEvent.OnCreateAccountClick -> onCreateAccountClick()
+            SignupAction.OnNavigateToSignin -> onNavigateToSignin()
+            is SignupAction.OnNameChange -> onNameChange(event.name)
+            is SignupAction.OnEmailChange -> onEmailChange(event.email)
+            is SignupAction.OnPasswordChange -> onPasswordChange(event.password)
+            is SignupAction.OnPasswordVisibilityChange -> onPasswordVisibilityChange(event.visible)
+            is SignupAction.OnAgreeWIthPolicyChange -> onAgreeWIthPolicyChange(event.checked)
+            SignupAction.OnTermsAndPolicyClick -> onTermsAndPolicyClick()
+            SignupAction.OnSignupWithFacebook -> onSignupWithFacebook()
+            SignupAction.OnSignupWithGoogle -> onSignupWithGoogle()
+            SignupAction.OnCreateAccountClick -> onCreateAccountClick()
         }
     }
 
     private fun onNavigateToSignin() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(SignupUiEvent.NavigateToSignin)
+            _uiEvent.send(SignupEvent.NavigateToSignin)
         }
     }
 
@@ -77,7 +77,7 @@ class SignupViewModel @Inject constructor(
     private fun onTermsAndPolicyClick() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SignupUiEvent.ShowSnackbar("Not yet implemented")
+                SignupEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -85,7 +85,7 @@ class SignupViewModel @Inject constructor(
     private fun onSignupWithFacebook() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SignupUiEvent.ShowSnackbar("Not yet implemented")
+                SignupEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -93,7 +93,7 @@ class SignupViewModel @Inject constructor(
     private fun onSignupWithGoogle() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SignupUiEvent.ShowSnackbar("Not yet implemented")
+                SignupEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -101,7 +101,7 @@ class SignupViewModel @Inject constructor(
     private fun onCreateAccountClick() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                SignupUiEvent.ShowSnackbar("Not yet implemented")
+                SignupEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }

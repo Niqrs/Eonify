@@ -23,7 +23,7 @@ internal fun NavGraphBuilder.splashScreen(
         val viewModel: SplashViewModel = hiltViewModel()
         SplashScreen(
             uiEvent = viewModel.uiEvent,
-            onEvent = viewModel::onEvent,
+            onAction = viewModel::onAction,
             onSplashEnd = onSplashEnd
         )
     }

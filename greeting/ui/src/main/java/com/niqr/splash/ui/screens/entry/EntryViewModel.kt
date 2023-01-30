@@ -19,32 +19,32 @@ class EntryViewModel @Inject constructor(
 
     var uiState by mutableStateOf(EntryUiState())
 
-    private val _uiEvent = Channel<EntryUiEvent>()
+    private val _uiEvent = Channel<EntryEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: EntryEvent) {
+    fun onAction(event: EntryAction) {
         when(event) {
-            EntryEvent.OnBackClick -> onBackClick()
-            EntryEvent.OnNextClick -> onNextClick()
-            is EntryEvent.OnPageChange -> onPageChange(page = event.page)
+            EntryAction.OnBackClick -> onBackClick()
+            EntryAction.OnNextClick -> onNextClick()
+            is EntryAction.OnPageChange -> onPageChange(page = event.page)
         }
     }
 
     private fun onNextClick() {
         if (uiState.selectedPage == uiState.pages.lastIndex) {
             viewModelScope.launch(Dispatchers.IO) {
-                _uiEvent.send(EntryUiEvent.OnNavigateNext)
+                _uiEvent.send(EntryEvent.OnNavigateNext)
             }
         } else {
             viewModelScope.launch(Dispatchers.IO) {
-                _uiEvent.send(EntryUiEvent.OnNextPage)
+                _uiEvent.send(EntryEvent.OnNextPage)
             }
         }
     }
 
     private fun onBackClick() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(EntryUiEvent.OnBackPage)
+            _uiEvent.send(EntryEvent.OnBackPage)
         }
     }
 

@@ -23,7 +23,7 @@ internal fun NavGraphBuilder.entryScreen(
         val viewModel: EntryViewModel = hiltViewModel()
         EntryScreen(
             uiEvent = viewModel.uiEvent,
-            onEvent = viewModel::onEvent,
+            onAction = viewModel::onAction,
             uiState = viewModel.uiState,
             onNavigateNext = onNavigateNext
         )

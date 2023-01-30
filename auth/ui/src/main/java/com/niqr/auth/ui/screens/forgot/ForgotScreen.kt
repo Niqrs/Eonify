@@ -44,8 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ForgotScreen(
     uiState: ForgotUiState,
-    uiEvent: Flow<ForgotUiEvent>,
-    onEvent: (ForgotEvent) -> Unit,
+    uiEvent: Flow<ForgotEvent>,
+    onAction: (ForgotAction) -> Unit,
     onNavigateUp: () -> Unit
 ) {
     val snackbar = remember { SnackbarHostState() }
@@ -54,8 +54,8 @@ internal fun ForgotScreen(
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when(it) {
-                ForgotUiEvent.NavigateUp -> onNavigateUp()
-                is ForgotUiEvent.ShowSnackbar -> {
+                ForgotEvent.NavigateUp -> onNavigateUp()
+                is ForgotEvent.ShowSnackbar -> {
                     scope.launch {
                         if (snackbar.currentSnackbarData == null)
                             snackbar.showSnackbar(it.message)
@@ -83,7 +83,7 @@ internal fun ForgotScreen(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .align(Start),
-                onClick = { onEvent(ForgotEvent.OnNavigateUp) }
+                onClick = { onAction(ForgotAction.OnNavigateUp) }
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -122,14 +122,14 @@ internal fun ForgotScreen(
 
             AuthTextField( // Email TextField
                 value = uiState.email,
-                onValueChange = { onEvent(ForgotEvent.OnEmailChange(it)) },
+                onValueChange = { onAction(ForgotAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(32.dp))
 
             AuthButton( // AuthButton
-                onClick = {onEvent(ForgotEvent.OnContinueClick) },
+                onClick = {onAction(ForgotAction.OnContinueClick) },
                 text = "Continue",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,7 +148,7 @@ private fun ForgotScreenPreview() {
         ForgotScreen(
             uiState = ForgotUiState(),
             uiEvent = emptyFlow(),
-            onEvent = {},
+            onAction = {},
             onNavigateUp = {}
         )
     }

@@ -58,8 +58,8 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun SigninScreen(
     uiState: SigninUiState,
-    uiEvent: Flow<SigninUiEvent>,
-    onEvent: (SigninEvent) -> Unit,
+    uiEvent: Flow<SigninEvent>,
+    onAction: (SigninAction) -> Unit,
     onNavigateToForgot: () -> Unit,
     onNavigateToSignup: () -> Unit
 ) {
@@ -69,9 +69,9 @@ internal fun SigninScreen(
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when(it) {
-                SigninUiEvent.NavigateToForgot -> onNavigateToForgot()
-                SigninUiEvent.NavigateToSignup -> onNavigateToSignup()
-                is SigninUiEvent.ShowSnackbar -> {
+                SigninEvent.NavigateToForgot -> onNavigateToForgot()
+                SigninEvent.NavigateToSignup -> onNavigateToSignup()
+                is SigninEvent.ShowSnackbar -> {
                     scope.launch {
                         if (snackbar.currentSnackbarData == null)
                             snackbar.showSnackbar(it.message)
@@ -126,7 +126,7 @@ internal fun SigninScreen(
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 AuthWithButton(
-                    onClick = { onEvent(SigninEvent.OnSignupWithFacebook) },
+                    onClick = { onAction(SigninAction.OnSignupWithFacebook) },
                     text = "Facebook",
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -138,7 +138,7 @@ internal fun SigninScreen(
                     horizontalAlignment = Alignment.Start
                 )
                 AuthWithButton(
-                    onClick = { onEvent(SigninEvent.OnSignupWithGoogle) },
+                    onClick = { onAction(SigninAction.OnSignupWithGoogle) },
                     text = "Google",
                     modifier = Modifier.weight(1f),
                     icon = {
@@ -168,14 +168,14 @@ internal fun SigninScreen(
 
             AuthTextField( // Email TextField
                 value = uiState.email,
-                onValueChange = { onEvent(SigninEvent.OnEmailChange(it)) },
+                onValueChange = { onAction(SigninAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(16.dp))
             AuthTextField( // Password TextField
                 value = uiState.password,
-                onValueChange = { onEvent(SigninEvent.OnPasswordChange(it)) },
+                onValueChange = { onAction(SigninAction.OnPasswordChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
                 hint = "Password",
                 visualTransformation = if (uiState.passwordVisible) VisualTransformation.None
@@ -183,7 +183,7 @@ internal fun SigninScreen(
                 icon = {
                     IconButton(
                         onClick = {
-                            onEvent(SigninEvent.OnPasswordVisibilityChange(!uiState.passwordVisible))
+                            onAction(SigninAction.OnPasswordVisibilityChange(!uiState.passwordVisible))
                         }
                     ) {
                         AnimatedContent(
@@ -219,12 +219,12 @@ internal fun SigninScreen(
                     color = EonifyTheme.colorScheme.textHint,
                     textAlign = TextAlign.End
                 ),
-                onClick = { onEvent(SigninEvent.OnNavigateToForgot) }
+                onClick = { onAction(SigninAction.OnNavigateToForgot) }
             )
             Spacer(modifier = Modifier.height(28.dp))
 
             AuthButton( // AuthButton
-                onClick = {onEvent(SigninEvent.OnLoginClick) },
+                onClick = {onAction(SigninAction.OnLoginClick) },
                 text = "Log In",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -250,7 +250,7 @@ internal fun SigninScreen(
                     color = EonifyTheme.colorScheme.textMediumContrast,
                     textAlign = TextAlign.Start
                 ),
-                onClick = { onEvent(SigninEvent.OnNavigateToSignup) }
+                onClick = { onAction(SigninAction.OnNavigateToSignup) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }
@@ -266,7 +266,7 @@ private fun SigninScreenPreview() {
         SigninScreen(
             uiState = SigninUiState(),
             uiEvent = emptyFlow(),
-            onEvent = {},
+            onAction = {},
             onNavigateToForgot = {},
             onNavigateToSignup = {}
         )

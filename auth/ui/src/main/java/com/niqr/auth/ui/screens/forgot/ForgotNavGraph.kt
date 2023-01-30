@@ -19,7 +19,7 @@ internal fun NavGraphBuilder.forgotScreen(
         ForgotScreen(
             uiState = viewModel.uiState,
             uiEvent = viewModel.uiEvent,
-            onEvent = viewModel::onEvent,
+            onAction = viewModel::onAction,
             onNavigateUp = onNavigateBack
         )
     }

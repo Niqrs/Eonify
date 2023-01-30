@@ -20,21 +20,21 @@ class ForgotViewModel @Inject constructor(
     var uiState by mutableStateOf(ForgotUiState())
         private set
 
-    private val _uiEvent = Channel<ForgotUiEvent>()
+    private val _uiEvent = Channel<ForgotEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: ForgotEvent) {
+    fun onAction(event: ForgotAction) {
         when(event) {
-            ForgotEvent.OnContinueClick -> onContinueClick()
-            is ForgotEvent.OnEmailChange -> onEmailChange(event.email)
-            ForgotEvent.OnNavigateUp -> onNavigateUp()
+            ForgotAction.OnContinueClick -> onContinueClick()
+            is ForgotAction.OnEmailChange -> onEmailChange(event.email)
+            ForgotAction.OnNavigateUp -> onNavigateUp()
         }
     }
 
     private fun onContinueClick() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
-                ForgotUiEvent.ShowSnackbar("Not yet implemented")
+                ForgotEvent.ShowSnackbar("Not yet implemented")
             )
         }
     }
@@ -47,7 +47,7 @@ class ForgotViewModel @Inject constructor(
 
     private fun onNavigateUp() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(ForgotUiEvent.NavigateUp)
+            _uiEvent.send(ForgotEvent.NavigateUp)
         }
     }
 }

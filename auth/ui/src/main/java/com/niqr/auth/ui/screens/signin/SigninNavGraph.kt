@@ -20,7 +20,7 @@ internal fun NavGraphBuilder.signinScreen(
         SigninScreen(
             uiState = viewModel.uiState,
             uiEvent = viewModel.uiEvent,
-            onEvent = viewModel::onEvent,
+            onAction = viewModel::onAction,
             onNavigateToForgot = onNavigateToForgot,
             onNavigateToSignup = onNavigateToSignup
         )
