@@ -5,10 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-private const val EntryGraphRoutePattern = "entry"
+private const val EntryScreenRoutePattern = "entry"
 
 internal fun NavController.navigateToEntry() {
-    this.navigate(EntryGraphRoutePattern) {
+    this.navigate(EntryScreenRoutePattern) {
         popUpTo(0)
         launchSingleTop = true
     }
@@ -18,7 +18,7 @@ internal fun NavGraphBuilder.entryScreen(
     onNavigateNext: () -> Unit
 ) {
     composable(
-        route = EntryGraphRoutePattern
+        route = EntryScreenRoutePattern
     ) {
         val viewModel: EntryViewModel = hiltViewModel()
         EntryScreen(

@@ -5,17 +5,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-private const val SigninGraphRoutePattern = "signin"
+private const val SigninScreenRoutePattern = "signin"
 
 internal fun NavController.navigateToSignin() {
-    this.navigate(SigninGraphRoutePattern)
+    this.navigate(SigninScreenRoutePattern)
 }
 
 internal fun NavGraphBuilder.signinScreen(
     onNavigateToForgot: () -> Unit,
     onNavigateToSignup: () -> Unit
 ) {
-    composable(SigninGraphRoutePattern) {
+    composable(SigninScreenRoutePattern) {
         val viewModel: SigninViewModel = hiltViewModel()
         SigninScreen(
             uiState = viewModel.uiState,

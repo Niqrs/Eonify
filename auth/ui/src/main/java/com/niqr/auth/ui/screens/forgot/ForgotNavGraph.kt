@@ -5,15 +5,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-private const val ForgotGraphRoutePattern = "forgot"
+private const val ForgotScreenRoutePattern = "forgot"
 internal fun NavController.navigateToForgot() {
-    this.navigate(ForgotGraphRoutePattern)
+    this.navigate(ForgotScreenRoutePattern)
 }
 
 internal fun NavGraphBuilder.forgotScreen(
     onNavigateBack: () -> Unit
 ) {
-    composable(ForgotGraphRoutePattern) {
+    composable(ForgotScreenRoutePattern) {
         val viewModel: ForgotViewModel = hiltViewModel()
 
         ForgotScreen(
