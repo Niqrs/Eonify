@@ -52,10 +52,23 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:core"))
+
+    implementation(project(":greeting:ui"))
 
     implementation(project(":auth:ui"))
-    implementation(project(":greeting:ui"))
+    implementation(project(":auth:data"))
+    implementation(project(":auth:domain"))
+
     implementation(project(":profile:ui"))
+    implementation(project(":profile:data"))
+    implementation(project(":profile:domain"))
+
+    // Import the BoM for the Firebase platform
+    implementation(platform(Dependencies.Firebase.bom)) //TODO: manage it
+    implementation(Dependencies.Firebase.auth)
+    implementation(Dependencies.Firebase.firestore)
+    implementation(Dependencies.PlayServices.auth)
 
 
     implementation(Dependencies.Android.coreKtx)
