@@ -1,6 +1,6 @@
 package com.niqr.profile.data
 
-import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.niqr.core.AppConstants.NO_VALUE
 import com.niqr.profile.domain.ProfileRepository
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private var oneTapClient: SignInClient,
+    private var googleClient: GoogleSignInClient,
 ): ProfileRepository {
     override val user = User(
         uid = auth.currentUser?.uid ?: NO_VALUE,
@@ -21,7 +21,7 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override suspend fun signOut(): Boolean {
         return try {
-            oneTapClient.signOut().await()
+            googleClient.signOut().await()
             auth.signOut()
             true // Success
         } catch (e: Exception) {
