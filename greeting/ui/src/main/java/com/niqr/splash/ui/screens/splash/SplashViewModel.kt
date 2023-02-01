@@ -2,6 +2,7 @@ package com.niqr.splash.ui.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -12,8 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-
+    auth: FirebaseAuth
 ): ViewModel() {
+    private val isAuthenticated = auth.currentUser != null
 
     private val _uiEvent = Channel<SplashEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -27,7 +29,10 @@ class SplashViewModel @Inject constructor(
     private fun onSplashStarted() {
         viewModelScope.launch(Dispatchers.IO) {
             delay(2000)
-            _uiEvent.send(SplashEvent.OnSplashEnd)
+            _uiEvent.send(
+                if (isAuthenticated) SplashEvent.OnNavigateToProfile
+                else SplashEvent.OnNavigateToEntry
+            )
         }
     }
 }

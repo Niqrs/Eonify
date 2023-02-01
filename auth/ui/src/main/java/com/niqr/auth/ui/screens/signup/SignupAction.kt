@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.signup
 
+import androidx.activity.result.ActivityResult
+
 sealed class SignupAction {
     object OnNavigateToSignin: SignupAction()
     data class OnNameChange(val name: String): SignupAction()
@@ -11,4 +13,5 @@ sealed class SignupAction {
     object OnSignupWithFacebook: SignupAction()
     object OnSignupWithGoogle: SignupAction()
     object OnCreateAccountClick: SignupAction()
+    data class OnSignupWithGoogleResult(val result: ActivityResult): SignupAction()
 }

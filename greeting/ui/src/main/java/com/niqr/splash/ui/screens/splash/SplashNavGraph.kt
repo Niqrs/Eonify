@@ -15,7 +15,8 @@ internal fun NavController.navigateToSplash() {
 }
 
 internal fun NavGraphBuilder.splashScreen(
-    onSplashEnd: () -> Unit
+    onNavigateToEntry: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     composable(
         route = SplashScreenRoutePattern
@@ -24,7 +25,8 @@ internal fun NavGraphBuilder.splashScreen(
         SplashScreen(
             uiEvent = viewModel.uiEvent,
             onAction = viewModel::onAction,
-            onSplashEnd = onSplashEnd
+            onNavigateToEntry = onNavigateToEntry,
+            onNavigateToProfile = onNavigateToProfile
         )
     }
 }

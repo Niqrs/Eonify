@@ -23,13 +23,15 @@ import kotlinx.coroutines.flow.Flow
 internal fun SplashScreen(
     uiEvent: Flow<SplashEvent>,
     onAction: (SplashAction) -> Unit,
-    onSplashEnd: () -> Unit
+    onNavigateToEntry: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
         onAction(SplashAction.OnSplashLaunched)
         uiEvent.collect {
             when(it) {
-                SplashEvent.OnSplashEnd -> onSplashEnd()
+                SplashEvent.OnNavigateToEntry -> onNavigateToEntry()
+                SplashEvent.OnNavigateToProfile -> onNavigateToProfile()
             }
         }
     }

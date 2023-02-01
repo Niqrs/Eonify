@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niqr.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -14,10 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-
+    val repo: ProfileRepository
 ): ViewModel() {
 
-    var uiState by mutableStateOf(ProfileUiState())
+    var uiState by mutableStateOf(ProfileUiState(repo.user))
         private set
 
     private val _uiEvent = Channel<ProfileEvent>()
@@ -31,7 +32,9 @@ class ProfileViewModel @Inject constructor(
 
     private fun onSignOut() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(ProfileEvent.SignOut)
+            val result = repo.signOut()
+            if (result)
+                _uiEvent.send(ProfileEvent.SignOut)
         }
     }
 }

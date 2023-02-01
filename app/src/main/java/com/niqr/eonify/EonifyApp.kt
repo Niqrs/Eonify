@@ -33,7 +33,8 @@ fun EonifyApp() {
         ) {
             greetingGraph(
                 navController = navController,
-                onNavigateNext = navController::navigateToAuthGraph
+                onNavigateNext = navController::navigateToAuthGraph,
+                onNavigateToProfile = navController::navigateToProfileGraph
             )
             authGraph(
                 navController = navController,

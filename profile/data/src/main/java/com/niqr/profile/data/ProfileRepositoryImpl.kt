@@ -14,6 +14,7 @@ class ProfileRepositoryImpl @Inject constructor(
 ): ProfileRepository {
     override val user = User(
         uid = auth.currentUser?.uid ?: NO_VALUE,
+        photoUrl = auth.currentUser?.photoUrl.toString(),
         displayName = auth.currentUser?.displayName ?: NO_VALUE,
         email = auth.currentUser?.email ?: NO_VALUE
     )

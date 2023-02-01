@@ -56,6 +56,9 @@ object Dependencies {
     }
 
     object PlayServices {
+        private const val gradlePluginVersion = "4.3.15"
+        const val gradlePlugin = "com.google.gms:google-services:$gradlePluginVersion"
+
         private const val authVersion = "20.4.1"
 
         const val auth = "com.google.android.gms:play-services-auth:$authVersion"
