@@ -32,7 +32,8 @@ fun NavGraphBuilder.authGraph(
         )
         signinScreen(
             onNavigateToForgot = navController::navigateToForgot,
-            onNavigateToSignup = navController::navigateUp
+            onNavigateToSignup = navController::navigateUp,
+            onSuccessAuth = onSuccessAuth
         )
         signupScreen(
             onNavigateToSignin = navController::navigateToSignin,

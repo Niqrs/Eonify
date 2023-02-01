@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.signin
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -61,16 +63,23 @@ internal fun SigninScreen(
     uiEvent: Flow<SigninEvent>,
     onAction: (SigninAction) -> Unit,
     onNavigateToForgot: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToSignup: () -> Unit,
+    onSuccess: () -> Unit
 ) {
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onAction(SigninAction.OnSignupWithGoogleResult(result))
+    }
 
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when(it) {
                 SigninEvent.NavigateToForgot -> onNavigateToForgot()
                 SigninEvent.NavigateToSignup -> onNavigateToSignup()
+                is SigninEvent.LaunchGoogleAuth -> launcher.launch(it.intent)
+                SigninEvent.Success -> onSuccess()
                 is SigninEvent.ShowSnackbar -> {
                     scope.launch {
                         if (snackbar.currentSnackbarData == null)
@@ -268,7 +277,8 @@ private fun SigninScreenPreview() {
             uiEvent = emptyFlow(),
             onAction = {},
             onNavigateToForgot = {},
-            onNavigateToSignup = {}
+            onNavigateToSignup = {},
+            onSuccess = {}
         )
     }
 }

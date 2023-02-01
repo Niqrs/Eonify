@@ -13,7 +13,8 @@ internal fun NavController.navigateToSignin() {
 
 internal fun NavGraphBuilder.signinScreen(
     onNavigateToForgot: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToSignup: () -> Unit,
+    onSuccessAuth: () -> Unit
 ) {
     composable(SigninScreenRoutePattern) {
         val viewModel: SigninViewModel = hiltViewModel()
@@ -22,7 +23,8 @@ internal fun NavGraphBuilder.signinScreen(
             uiEvent = viewModel.uiEvent,
             onAction = viewModel::onAction,
             onNavigateToForgot = onNavigateToForgot,
-            onNavigateToSignup = onNavigateToSignup
+            onNavigateToSignup = onNavigateToSignup,
+            onSuccess = onSuccessAuth
         )
     }
 }

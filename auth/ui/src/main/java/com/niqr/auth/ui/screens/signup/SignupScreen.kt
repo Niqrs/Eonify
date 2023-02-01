@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.signup
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -67,6 +69,10 @@ fun SignupScreen(
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onAction(SignupAction.OnSignupWithGoogleResult(result))
+    }
+
     LaunchedEffect(key1 = true) {
         uiEvent.collect {
             when (it) {
@@ -77,10 +83,14 @@ fun SignupScreen(
                             snackbar.showSnackbar(it.message)
                     }
                 }
+                is SignupEvent.LaunchGoogleAuth -> {
+                    launcher.launch(it.intent)
+                }
                 SignupEvent.Success -> onSuccess()
             }
         }
     }
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

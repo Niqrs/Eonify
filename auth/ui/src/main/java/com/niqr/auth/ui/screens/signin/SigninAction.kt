@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.signin
 
+import androidx.activity.result.ActivityResult
+
 sealed class SigninAction {
     object OnNavigateToForgot: SigninAction()
     object OnNavigateToSignup: SigninAction()
@@ -8,5 +10,6 @@ sealed class SigninAction {
     data class OnPasswordVisibilityChange(val visible: Boolean): SigninAction()
     object OnSignupWithFacebook: SigninAction()
     object OnSignupWithGoogle: SigninAction()
+    data class OnSignupWithGoogleResult(val result: ActivityResult): SigninAction()
     object OnLoginClick: SigninAction()
 }

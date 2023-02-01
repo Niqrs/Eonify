@@ -10,6 +10,9 @@ android {
 dependencies {
     implementation(project(":core:ui"))
 
+    implementation(platform(Dependencies.Firebase.bom))
+    api(Dependencies.Firebase.auth)
+
     implementation(Dependencies.Accompanist.pager)
     implementation(Dependencies.Accompanist.pagerIndicators)
 }

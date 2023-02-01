@@ -5,7 +5,7 @@ object Dependencies {
     }
 
     object Android {
-        private const val gradlePluginVersion = "8.1.0-alpha01"
+        private const val gradlePluginVersion = "8.1.0-alpha02"
         const val gradlePlugin = "com.android.tools.build:gradle:$gradlePluginVersion"
 
         private const val activityComposeVersion = "1.6.1"
@@ -45,6 +45,23 @@ object Dependencies {
 
         const val pager = "com.google.accompanist:accompanist-pager:$version"
         const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$version"
+    }
+
+    object Firebase {
+        private const val bomVersion = "31.2.0"
+
+        const val bom = "com.google.firebase:firebase-bom:$bomVersion"
+        const val auth = "com.google.firebase:firebase-auth-ktx"
+        const val firestore = "com.google.firebase:firebase-firestore-ktx"
+    }
+
+    object PlayServices {
+        private const val gradlePluginVersion = "4.3.15"
+        const val gradlePlugin = "com.google.gms:google-services:$gradlePluginVersion"
+
+        private const val authVersion = "20.4.1"
+
+        const val auth = "com.google.android.gms:play-services-auth:$authVersion"
     }
 
     object Testing {

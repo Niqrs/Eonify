@@ -16,14 +16,16 @@ rootProject.name = "Eonify"
 
 // APP
 include(":app")
+// SPLASH
+include(":greeting:ui")
 // AUTH
 include(":auth:ui")
 include(":auth:data")
 include(":auth:domain")
 // PROFILE
 include(":profile:ui")
-// SPLASH
-include(":greeting:ui")
+include(":profile:data")
+include(":profile:domain")
 //CORE
 include(":core:core")
 include(":core:ui")

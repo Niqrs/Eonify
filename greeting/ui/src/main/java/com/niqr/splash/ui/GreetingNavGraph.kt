@@ -19,14 +19,16 @@ fun NavController.navigateToGreetingGraph() {
 
 fun NavGraphBuilder.greetingGraph(
     navController: NavController,
-    onNavigateNext: () -> Unit
+    onNavigateNext: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
     navigation(
         route = GreetingGraphRoutePattern,
         startDestination = SplashScreenRoutePattern
     ) {
         splashScreen(
-            onSplashEnd = navController::navigateToEntry
+            onNavigateToEntry = navController::navigateToEntry,
+            onNavigateToProfile = onNavigateToProfile
         )
         entryScreen(
             onNavigateNext = onNavigateNext

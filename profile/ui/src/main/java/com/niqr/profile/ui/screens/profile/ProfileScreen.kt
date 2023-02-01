@@ -39,7 +39,10 @@ internal fun ProfileScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = uiState.name)
+            Text(text = uiState.user.uid, color = EonifyTheme.colorScheme.textMediumContrast)
+            Text(text = uiState.user.photoUrl, color = EonifyTheme.colorScheme.textMediumContrast)
+            Text(text = uiState.user.displayName, color = EonifyTheme.colorScheme.textMediumContrast)
+            Text(text = uiState.user.email, color = EonifyTheme.colorScheme.textMediumContrast)
             Button(
                 onClick = {
                     onAction(ProfileAction.OnSignOut)
