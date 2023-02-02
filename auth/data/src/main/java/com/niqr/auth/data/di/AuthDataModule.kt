@@ -1,4 +1,4 @@
-package com.niqr.eonify.di
+package com.niqr.auth.data.di
 
 import android.app.Application
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -11,12 +11,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.niqr.auth.data.AuthRepositoryImpl
 import com.niqr.auth.domain.AuthRepository
-import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
-import com.niqr.auth.ui.handlers.SignInWithEmailHandler
-import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
 import com.niqr.core.FirebaseSecretConstants
-import com.niqr.profile.data.ProfileRepositoryImpl
-import com.niqr.profile.domain.ProfileRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +19,8 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule { //TODO: Manage hilt modules
+object AuthDataModule {
+
     @Provides
     fun provideFirebaseAuth() = Firebase.auth
 
@@ -49,35 +45,5 @@ object AppModule { //TODO: Manage hilt modules
     ): AuthRepository = AuthRepositoryImpl(
         auth = auth,
         db = db
-    )
-
-    @Provides
-    fun provideProfileRepository(
-        auth: FirebaseAuth,
-        googleSignInClient: GoogleSignInClient
-    ): ProfileRepository = ProfileRepositoryImpl(
-        auth = auth,
-        googleClient = googleSignInClient
-    )
-
-    @Provides
-    fun provideGoogleAuthResultHandler(
-        repo: AuthRepository
-    ) = GoogleAuthResultHandler(
-        repo = repo
-    )
-
-    @Provides
-    fun provideSignUpWithEmailHandler(
-        repo: AuthRepository
-    ) = SignUpWithEmailHandler (
-        repo = repo
-    )
-
-    @Provides
-    fun provideSignInWithEmailHandler(
-        repo: AuthRepository
-    ) = SignInWithEmailHandler (
-        repo = repo
     )
 }
