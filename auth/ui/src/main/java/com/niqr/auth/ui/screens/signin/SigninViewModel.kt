@@ -7,7 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.niqr.auth.domain.model.SignInWIthEmailResult
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
+import com.niqr.auth.ui.handlers.SignInWithEmailHandler
 import com.niqr.auth.ui.handlers.model.GoogleAuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SigninViewModel @Inject constructor(
     private val googleSignInClient: GoogleSignInClient,
-    private val googleAuthResultHandler: GoogleAuthResultHandler
+    private val googleAuthResultHandler: GoogleAuthResultHandler,
+    private val signInWithEmailHandler: SignInWithEmailHandler
 ): ViewModel() {
 
     var uiState by mutableStateOf(SigninUiState())
@@ -105,9 +108,19 @@ class SigninViewModel @Inject constructor(
 
     private fun onLoginClick() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(
-                SigninEvent.ShowSnackbar("Not yet implemented")
+            val result = signInWithEmailHandler.signIn(
+                email = uiState.email,
+                password = uiState.password
             )
+            when(result) {
+                SignInWIthEmailResult.Success -> _uiEvent.send(SigninEvent.Success)
+                SignInWIthEmailResult.InvalidCredentials -> {
+                    _uiEvent.send(SigninEvent.ShowSnackbar("InvalidCredentials"))
+                }
+                SignInWIthEmailResult.UnknownException -> {
+                    _uiEvent.send(SigninEvent.ShowSnackbar("UnknownException"))
+                }
+            }
         }
     }
 

@@ -12,6 +12,8 @@ import com.google.firebase.ktx.Firebase
 import com.niqr.auth.data.AuthRepositoryImpl
 import com.niqr.auth.domain.AuthRepository
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
+import com.niqr.auth.ui.handlers.SignInWithEmailHandler
+import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
 import com.niqr.core.FirebaseSecretConstants
 import com.niqr.profile.data.ProfileRepositoryImpl
 import com.niqr.profile.domain.ProfileRepository
@@ -62,6 +64,20 @@ object AppModule { //TODO: Manage hilt modules
     fun provideGoogleAuthResultHandler(
         repo: AuthRepository
     ) = GoogleAuthResultHandler(
+        repo = repo
+    )
+
+    @Provides
+    fun provideSignUpWithEmailHandler(
+        repo: AuthRepository
+    ) = SignUpWithEmailHandler (
+        repo = repo
+    )
+
+    @Provides
+    fun provideSignInWithEmailHandler(
+        repo: AuthRepository
+    ) = SignInWithEmailHandler (
         repo = repo
     )
 }
