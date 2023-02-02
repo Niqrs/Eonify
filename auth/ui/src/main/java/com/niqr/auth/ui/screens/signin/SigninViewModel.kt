@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
+import com.niqr.auth.ui.handlers.model.GoogleAuthResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -92,11 +93,12 @@ class SigninViewModel @Inject constructor(
 
     private fun onSignupWithGoogleResult(result: ActivityResult) {
         viewModelScope.launch {
-            val signInWithGoogleResponse = googleAuthResultHandler.handle(result)
-            if (signInWithGoogleResponse) {
-                _uiEvent.send(SigninEvent.Success)
-            } else {
-                _uiEvent.send(SigninEvent.ShowSnackbar("Error"))
+            when(googleAuthResultHandler.handle(result)) {
+                GoogleAuthResult.Success -> _uiEvent.send(SigninEvent.Success)
+                GoogleAuthResult.Canceled -> { /*Nothing*/ }
+                GoogleAuthResult.UnknownException -> {
+                    _uiEvent.send(SigninEvent.ShowSnackbar("Something went wrong"))
+                }
             }
         }
     }
