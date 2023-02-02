@@ -53,6 +53,23 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun firebaseSignUpWithEmailAndPassword(
+        email: String,
+        password: String
+    ): Boolean {
+        return try {
+            val authResult = auth.createUserWithEmailAndPassword(email, password).await()
+            val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+            if (isNewUser) {
+                createUserInFirestore()
+                auth.currentUser?.sendEmailVerification()
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     private suspend fun createUserInFirestore() {
         auth.currentUser?.apply {
             val user = toUser()
