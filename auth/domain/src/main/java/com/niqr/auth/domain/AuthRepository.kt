@@ -6,4 +6,5 @@ interface AuthRepository {
     val isAuthenticated: Boolean
 
     suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): Boolean
+    suspend fun firebaseSignInWithEmailAndPassword(email: String, password: String): Boolean
 }

@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GoogleAuthResultHandler @Inject constructor(
     private val repo: AuthRepository
 ) {
-    suspend fun handle(result: ActivityResult): Boolean {
+    suspend fun handle(result: ActivityResult): Boolean { //TODO: Return type should be better
         return if (result.resultCode == Activity.RESULT_OK) {
             try {
                 val googleAccount = GoogleSignIn.getSignedInAccountFromIntent(result.data).await()
