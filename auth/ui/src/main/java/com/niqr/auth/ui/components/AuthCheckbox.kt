@@ -23,13 +23,16 @@ fun AuthCheckbox(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     backgroundColor: Color = EonifyTheme.colorScheme.surface,
     checkmarkColor: Color = EonifyTheme.colorScheme.primary,
 ) {
     val colors = CheckboxDefaults.colors(
         checkedColor = backgroundColor,
         uncheckedColor = backgroundColor,
-        checkmarkColor = checkmarkColor
+        checkmarkColor = checkmarkColor,
+        disabledCheckedColor = backgroundColor,
+        disabledUncheckedColor = backgroundColor
     )
 
     Box(
@@ -43,6 +46,7 @@ fun AuthCheckbox(
             onCheckedChange = onCheckedChange,
             modifier = Modifier
                 .size(26.dp),
+            enabled = enabled,
             colors = colors
         )
     }
