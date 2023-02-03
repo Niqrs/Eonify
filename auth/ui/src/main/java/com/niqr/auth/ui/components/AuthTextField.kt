@@ -110,7 +110,7 @@ fun AuthTextField(
                         modifier = Modifier
                             .padding(
                                 TextFieldDefaults.textFieldWithoutLabelPadding(
-                                    end = if (icon == null) 16.dp else 48.dp
+                                    end = if (icon == null) 16.dp else 52.dp
                                 )
                             ),
                     ) {
@@ -129,6 +129,7 @@ fun AuthTextField(
                     if (icon != null) //Icon
                         Box(
                             modifier = Modifier
+                                .padding(end = 8.dp)
                                 .defaultMinSize(48.dp, 48.dp)
                                 .align(Alignment.CenterEnd),
                             contentAlignment = Alignment.Center

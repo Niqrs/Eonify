@@ -39,7 +39,7 @@ fun AuthCheckbox(
         modifier = modifier
             .clip(RoundedCornerShape(6.dp))
             .background(EonifyTheme.colorScheme.surface),
-    contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
         Checkbox(
             checked = checked,

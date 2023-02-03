@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -42,8 +43,7 @@ fun AuthWithButton(
     icon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = EonifyTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.W500,
-        textAlign = TextAlign.Start,
-        color = EonifyTheme.colorScheme.textBodyOnSurface
+        textAlign = TextAlign.Start
     ),
     shape: Shape = RoundedCornerShape(16.dp),
     backgroundColor: Color = EonifyTheme.colorScheme.surface,
@@ -60,7 +60,7 @@ fun AuthWithButton(
             containerColor = backgroundColor,
             disabledContainerColor = backgroundColor,
             contentColor = EonifyTheme.colorScheme.textBodyOnSurface,
-            disabledContentColor = EonifyTheme.colorScheme.textBodyOnSurface
+            disabledContentColor = EonifyTheme.colorScheme.textHint
         ),
         contentPadding = contentPadding,
         interactionSource = interactionSource
@@ -79,7 +79,8 @@ fun AuthWithButton(
             Text(
                 modifier = Modifier.wrapContentWidth(Alignment.Start),
                 text = text,
-                style = textStyle
+                style = textStyle,
+                color = LocalContentColor.current
             )
         }
     }
