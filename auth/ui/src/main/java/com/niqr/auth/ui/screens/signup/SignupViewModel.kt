@@ -7,10 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.niqr.auth.domain.model.SignUpWithEmailResult
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
 import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
-import com.niqr.auth.ui.handlers.model.GoogleAuthResult
+import com.niqr.core_util.Result
+import com.niqr.core_util.filterWhitespaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -57,19 +57,19 @@ class SignupViewModel @Inject constructor(
 
     private fun onNameChange(name: String) {
         uiState = uiState.copy(
-            name = name
+            name = name.filterWhitespaces()
         )
     }
 
     private fun onEmailChange(email: String) {
         uiState = uiState.copy(
-            email = email
+            email = email.filterWhitespaces()
         )
     }
 
     private fun onPasswordChange(password: String) {
         uiState = uiState.copy(
-            password = password
+            password = password.filterWhitespaces()
         )
     }
 
@@ -94,14 +94,19 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onSignupWithFacebook() {
+//        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
                 SignupEvent.ShowSnackbar("Not yet implemented")
             )
+//            uiState = uiState.copy(isLoading = false)
         }
     }
 
+//    private fun onSignupWithFacebookResult() {}
+
     private fun onSignupWithGoogle() {
+        uiState = uiState.copy(isLoading = true)
         val intent = googleSignInClient.signInIntent
         viewModelScope.launch {
             _uiEvent.send(SignupEvent.LaunchGoogleAuth(intent))
@@ -110,37 +115,51 @@ class SignupViewModel @Inject constructor(
 
     private fun onSignupWithGoogleResult(result: ActivityResult) {
         viewModelScope.launch {
-            when(googleAuthResultHandler.handle(result)) {
-                GoogleAuthResult.Success -> _uiEvent.send(SignupEvent.Success)
-                GoogleAuthResult.Canceled -> { /*Nothing*/ }
-                GoogleAuthResult.UnknownException -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("Something went wrong"))
+            val authResult = googleAuthResultHandler.handle(result)
+            uiState = uiState.copy(isLoading = false)
+            when(authResult) {
+                is Result.Success -> _uiEvent.send(SignupEvent.Success)
+                is Result.Error -> {
+                    authResult.data.let {
+                        if (!it.isNullOrBlank())
+                            _uiEvent.send(SignupEvent.ShowSnackbar(it))
+                    }
                 }
             }
         }
     }
 
     private fun onCreateAccountClick() {
+        if (uiState.isLoading) return
+        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = signUpWithEmailHandler.signUp(
-                email = uiState.email,
-                password = uiState.password
-            )
-            when(result) {
-                SignUpWithEmailResult.Success -> _uiEvent.send(SignupEvent.Success)
-                SignUpWithEmailResult.WeakPassword -> { //TODO: All the error messages should be as value of a single Error object parameter
-                    _uiEvent.send(SignupEvent.ShowSnackbar("WeakPassword"))
-                }
-                SignUpWithEmailResult.InvalidCredentials -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("InvalidCredentials"))
-                }
-                SignUpWithEmailResult.UserCollision -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("UserCollision"))
-                }
-                SignUpWithEmailResult.UnknownException -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("UnknownException"))
-                }
+            if (checkFields()) {
+                createAccount()
             }
+            uiState = uiState.copy(isLoading = false)
+        }
+    }
+
+    private suspend fun checkFields(): Boolean {
+        return if (uiState.name.isBlank() or uiState.email.isBlank() or uiState.password.isBlank()) {
+            _uiEvent.send(SignupEvent.ShowSnackbar("Fields can't be empty"))
+            false
+        } else if (!uiState.agreedWithPolicy) {
+            _uiEvent.send(SignupEvent.ShowSnackbar("You should agree to the policy"))
+            false
+        } else {
+            true
+        }
+    }
+
+    private suspend fun createAccount() {
+        val result = signUpWithEmailHandler.signUp(
+            email = uiState.email,
+            password = uiState.password
+        )
+        when(result) {
+            is Result.Success -> _uiEvent.send(SignupEvent.Success)
+            is Result.Error -> _uiEvent.send(SignupEvent.ShowSnackbar(result.data))
         }
     }
 }

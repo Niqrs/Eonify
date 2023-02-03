@@ -26,6 +26,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -138,6 +140,7 @@ internal fun SigninScreen(
                     onClick = { onAction(SigninAction.OnSignupWithFacebook) },
                     text = "Facebook",
                     modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
                     icon = {
                         Image(
                             painter = painterResource(id = R.drawable.ic_facebook_logo_24dp),
@@ -150,6 +153,7 @@ internal fun SigninScreen(
                     onClick = { onAction(SigninAction.OnSignupWithGoogle) },
                     text = "Google",
                     modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
                     icon = {
                         Image(
                             painter = painterResource(id = R.drawable.ic_google_logo_24dp),
@@ -179,6 +183,7 @@ internal fun SigninScreen(
                 value = uiState.email,
                 onValueChange = { onAction(SigninAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -186,6 +191,7 @@ internal fun SigninScreen(
                 value = uiState.password,
                 onValueChange = { onAction(SigninAction.OnPasswordChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
                 hint = "Password",
                 visualTransformation = if (uiState.passwordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
@@ -193,7 +199,9 @@ internal fun SigninScreen(
                     IconButton(
                         onClick = {
                             onAction(SigninAction.OnPasswordVisibilityChange(!uiState.passwordVisible))
-                        }
+                        },
+                        enabled = !uiState.isLoading,
+                        colors = IconButtonDefaults.iconButtonColors(disabledContentColor = LocalContentColor.current)
                     ) {
                         AnimatedContent(
                             targetState = uiState.passwordVisible,
@@ -228,7 +236,7 @@ internal fun SigninScreen(
                     color = EonifyTheme.colorScheme.textHint,
                     textAlign = TextAlign.End
                 ),
-                onClick = { onAction(SigninAction.OnNavigateToForgot) }
+                onClick = { if (!uiState.isLoading) onAction(SigninAction.OnNavigateToForgot) }
             )
             Spacer(modifier = Modifier.height(28.dp))
 
@@ -236,7 +244,8 @@ internal fun SigninScreen(
                 onClick = {onAction(SigninAction.OnLoginClick) },
                 text = "Log In",
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                loading = uiState.isLoading,
             )
             Spacer(modifier = Modifier.height(14.dp))
 
@@ -259,7 +268,7 @@ internal fun SigninScreen(
                     color = EonifyTheme.colorScheme.textMediumContrast,
                     textAlign = TextAlign.Start
                 ),
-                onClick = { onAction(SigninAction.OnNavigateToSignup) }
+                onClick = { if (!uiState.isLoading) onAction(SigninAction.OnNavigateToSignup) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }
