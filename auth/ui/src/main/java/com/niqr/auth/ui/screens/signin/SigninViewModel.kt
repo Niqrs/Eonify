@@ -63,13 +63,13 @@ class SigninViewModel @Inject constructor(
 
     private fun onEmailChange(email: String) {
         uiState = uiState.copy(
-            email = email
+            email = email.filterWhitespaces()
         )
     }
 
     private fun onPasswordChange(password: String) {
         uiState = uiState.copy(
-            password = password
+            password = password.filterWhitespaces()
         )
     }
 
