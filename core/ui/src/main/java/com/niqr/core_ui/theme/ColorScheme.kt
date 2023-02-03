@@ -51,7 +51,7 @@ internal val DarkColorScheme = EonifyColorScheme(
 
     textFieldText = Gray5,
     textFieldHint = Gray40,
-    textFieldDisabled = Gray20,
+    textFieldDisabled = Gray30,
     textFieldSelectedBorder = Primary40,
 
     error = Color.Red

@@ -80,14 +80,19 @@ class SigninViewModel @Inject constructor(
     }
 
     private fun onSignupWithFacebook() {
+//        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
                 SigninEvent.ShowSnackbar("Not yet implemented")
             )
+//            uiState = uiState.copy(isLoading = false)
         }
     }
 
+//    private fun onSignupWithFacebookResult() {}
+
     private fun onSignupWithGoogle() {
+        uiState = uiState.copy(isLoading = true)
         val intent = googleSignInClient.signInIntent
         viewModelScope.launch {
             _uiEvent.send(SigninEvent.LaunchGoogleAuth(intent))
@@ -97,9 +102,15 @@ class SigninViewModel @Inject constructor(
     private fun onSignupWithGoogleResult(result: ActivityResult) {
         viewModelScope.launch {
             when(googleAuthResultHandler.handle(result)) {
-                GoogleAuthResult.Success -> _uiEvent.send(SigninEvent.Success)
-                GoogleAuthResult.Canceled -> { /*Nothing*/ }
+                GoogleAuthResult.Success -> {
+                    uiState = uiState.copy(isLoading = false)
+                    _uiEvent.send(SigninEvent.Success)
+                }
+                GoogleAuthResult.Canceled -> {
+                    uiState = uiState.copy(isLoading = false)
+                }
                 GoogleAuthResult.UnknownException -> {
+                    uiState = uiState.copy(isLoading = false)
                     _uiEvent.send(SigninEvent.ShowSnackbar("Something went wrong"))
                 }
             }
@@ -107,21 +118,38 @@ class SigninViewModel @Inject constructor(
     }
 
     private fun onLoginClick() {
+        if (uiState.isLoading) return
+        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = signInWithEmailHandler.signIn(
-                email = uiState.email,
-                password = uiState.password
-            )
-            when(result) {
-                SignInWIthEmailResult.Success -> _uiEvent.send(SigninEvent.Success)
-                SignInWIthEmailResult.InvalidCredentials -> {
-                    _uiEvent.send(SigninEvent.ShowSnackbar("InvalidCredentials"))
-                }
-                SignInWIthEmailResult.UnknownException -> {
-                    _uiEvent.send(SigninEvent.ShowSnackbar("UnknownException"))
-                }
+            if (checkFields()) {
+                login()
             }
+            uiState = uiState.copy(isLoading = false)
         }
     }
 
+    private suspend fun checkFields(): Boolean {
+        return if (uiState.email.isBlank() or uiState.password.isBlank()) {
+            _uiEvent.send(SigninEvent.ShowSnackbar("Fields can't be empty"))
+            false
+        } else {
+            true
+        }
+    }
+
+    private suspend fun login() {
+        val result = signInWithEmailHandler.signIn(
+            email = uiState.email,
+            password = uiState.password
+        )
+        when(result) {
+            SignInWIthEmailResult.Success -> _uiEvent.send(SigninEvent.Success)
+            SignInWIthEmailResult.InvalidCredentials -> {
+                _uiEvent.send(SigninEvent.ShowSnackbar("Invalid email or password"))
+            }
+            SignInWIthEmailResult.UnknownException -> {
+                _uiEvent.send(SigninEvent.ShowSnackbar("Something went wrong"))
+            }
+        }
+    }
 }
