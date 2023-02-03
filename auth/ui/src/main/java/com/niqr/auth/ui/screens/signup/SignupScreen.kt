@@ -140,6 +140,7 @@ fun SignupScreen(
                     onClick = { onAction(SignupAction.OnSignupWithFacebook) },
                     text = "Facebook",
                     modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
                     icon = {
                         Image(
                             painter = painterResource(id = R.drawable.ic_facebook_logo_24dp),
@@ -152,6 +153,7 @@ fun SignupScreen(
                     onClick = { onAction(SignupAction.OnSignupWithGoogle) },
                     text = "Google",
                     modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
                     icon = {
                         Image(
                             painter = painterResource(id = R.drawable.ic_google_logo_24dp),
@@ -181,6 +183,7 @@ fun SignupScreen(
                 value = uiState.name,
                 onValueChange = { onAction(SignupAction.OnNameChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
                 hint = "Name"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -188,6 +191,7 @@ fun SignupScreen(
                 value = uiState.email,
                 onValueChange = { onAction(SignupAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -195,6 +199,7 @@ fun SignupScreen(
                 value = uiState.password,
                 onValueChange = { onAction(SignupAction.OnPasswordChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading,
                 hint = "Password",
                 visualTransformation = if (uiState.passwordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
@@ -202,7 +207,8 @@ fun SignupScreen(
                     IconButton(
                         onClick = {
                             onAction(SignupAction.OnPasswordVisibilityChange(!uiState.passwordVisible))
-                        }
+                        },
+                        enabled = !uiState.isLoading,
                     ) {
                         AnimatedContent(
                             targetState = uiState.passwordVisible,
@@ -233,7 +239,8 @@ fun SignupScreen(
             ) {
                 AuthCheckbox(
                     checked = uiState.agreedWithPolicy,
-                    onCheckedChange = { onAction(SignupAction.OnAgreeWIthPolicyChange(it)) }
+                    onCheckedChange = { onAction(SignupAction.OnAgreeWIthPolicyChange(it)) },
+                    enabled = !uiState.isLoading,
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 ClickableText(
@@ -263,16 +270,17 @@ fun SignupScreen(
                         color = EonifyTheme.colorScheme.textMediumContrast,
                         textAlign = TextAlign.Start
                     ),
-                    onClick = { onAction(SignupAction.OnTermsAndPolicyClick) }
+                    onClick = { if (!uiState.isLoading) onAction(SignupAction.OnTermsAndPolicyClick) }
                 )
             }
             Spacer(modifier = Modifier.height(28.dp))
 
             AuthButton( // AuthButton
-                onClick = {onAction(SignupAction.OnCreateAccountClick) },
+                onClick = { onAction(SignupAction.OnCreateAccountClick) },
                 text = "Create Account",
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                loading = uiState.isLoading,
             )
             Spacer(modifier = Modifier.height(14.dp))
 
@@ -295,7 +303,7 @@ fun SignupScreen(
                     color = EonifyTheme.colorScheme.textMediumContrast,
                     textAlign = TextAlign.Start
                 ),
-                onClick = { onAction(SignupAction.OnNavigateToSignin) }
+                onClick = { if (!uiState.isLoading) onAction(SignupAction.OnNavigateToSignin) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }

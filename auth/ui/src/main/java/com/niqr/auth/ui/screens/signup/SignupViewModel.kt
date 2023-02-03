@@ -94,14 +94,19 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onSignupWithFacebook() {
+//        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             _uiEvent.send(
                 SignupEvent.ShowSnackbar("Not yet implemented")
             )
+//            uiState = uiState.copy(isLoading = false)
         }
     }
 
+//    private fun onSignupWithFacebookResult() {}
+
     private fun onSignupWithGoogle() {
+        uiState = uiState.copy(isLoading = true)
         val intent = googleSignInClient.signInIntent
         viewModelScope.launch {
             _uiEvent.send(SignupEvent.LaunchGoogleAuth(intent))
@@ -111,9 +116,15 @@ class SignupViewModel @Inject constructor(
     private fun onSignupWithGoogleResult(result: ActivityResult) {
         viewModelScope.launch {
             when(googleAuthResultHandler.handle(result)) {
-                GoogleAuthResult.Success -> _uiEvent.send(SignupEvent.Success)
-                GoogleAuthResult.Canceled -> { /*Nothing*/ }
+                GoogleAuthResult.Success -> {
+                    uiState = uiState.copy(isLoading = false)
+                    _uiEvent.send(SignupEvent.Success)
+                }
+                GoogleAuthResult.Canceled -> {
+                    uiState = uiState.copy(isLoading = false)
+                }
                 GoogleAuthResult.UnknownException -> {
+                    uiState = uiState.copy(isLoading = false)
                     _uiEvent.send(SignupEvent.ShowSnackbar("Something went wrong"))
                 }
             }
@@ -121,25 +132,46 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCreateAccountClick() {
+        if (uiState.isLoading) return
+        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = signUpWithEmailHandler.signUp(
-                email = uiState.email,
-                password = uiState.password
-            )
-            when(result) {
-                SignUpWithEmailResult.Success -> _uiEvent.send(SignupEvent.Success)
-                SignUpWithEmailResult.WeakPassword -> { //TODO: All the error messages should be as value of a single Error object parameter
-                    _uiEvent.send(SignupEvent.ShowSnackbar("WeakPassword"))
-                }
-                SignUpWithEmailResult.InvalidCredentials -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("InvalidCredentials"))
-                }
-                SignUpWithEmailResult.UserCollision -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("UserCollision"))
-                }
-                SignUpWithEmailResult.UnknownException -> {
-                    _uiEvent.send(SignupEvent.ShowSnackbar("UnknownException"))
-                }
+            if (checkFields()) {
+                createAccount()
+            }
+            uiState = uiState.copy(isLoading = false)
+        }
+    }
+
+    private suspend fun checkFields(): Boolean {
+        return if (uiState.name.isBlank() or uiState.email.isBlank() or uiState.password.isBlank()) {
+            _uiEvent.send(SignupEvent.ShowSnackbar("Fields can't be empty"))
+            false
+        } else if (!uiState.agreedWithPolicy) {
+            _uiEvent.send(SignupEvent.ShowSnackbar("You should agree to the policy"))
+            false
+        } else {
+            true
+        }
+    }
+
+    private suspend fun createAccount() {
+        val result = signUpWithEmailHandler.signUp(
+            email = uiState.email,
+            password = uiState.password
+        )
+        when(result) {
+            SignUpWithEmailResult.Success -> _uiEvent.send(SignupEvent.Success)
+            SignUpWithEmailResult.WeakPassword -> { //TODO: All the error messages should be as value of a single Error object parameter
+                _uiEvent.send(SignupEvent.ShowSnackbar("Weak password"))
+            }
+            SignUpWithEmailResult.InvalidCredentials -> {
+                _uiEvent.send(SignupEvent.ShowSnackbar("Invalid email"))
+            }
+            SignUpWithEmailResult.UserCollision -> {
+                _uiEvent.send(SignupEvent.ShowSnackbar("User with this email already exist"))
+            }
+            SignUpWithEmailResult.UnknownException -> {
+                _uiEvent.send(SignupEvent.ShowSnackbar("Something went wrong"))
             }
         }
     }
