@@ -7,10 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.niqr.auth.domain.model.SignUpWithEmailResult
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
 import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
-import com.niqr.auth.ui.handlers.model.GoogleAuthResult
+import com.niqr.core_util.Result
+import com.niqr.core_util.filterWhitespaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -115,17 +115,15 @@ class SignupViewModel @Inject constructor(
 
     private fun onSignupWithGoogleResult(result: ActivityResult) {
         viewModelScope.launch {
-            when(googleAuthResultHandler.handle(result)) {
-                GoogleAuthResult.Success -> {
-                    uiState = uiState.copy(isLoading = false)
-                    _uiEvent.send(SignupEvent.Success)
-                }
-                GoogleAuthResult.Canceled -> {
-                    uiState = uiState.copy(isLoading = false)
-                }
-                GoogleAuthResult.UnknownException -> {
-                    uiState = uiState.copy(isLoading = false)
-                    _uiEvent.send(SignupEvent.ShowSnackbar("Something went wrong"))
+            val authResult = googleAuthResultHandler.handle(result)
+            uiState = uiState.copy(isLoading = false)
+            when(authResult) {
+                is Result.Success -> _uiEvent.send(SignupEvent.Success)
+                is Result.Error -> {
+                    authResult.data.let {
+                        if (!it.isNullOrBlank())
+                            _uiEvent.send(SignupEvent.ShowSnackbar(it))
+                    }
                 }
             }
         }
@@ -160,19 +158,8 @@ class SignupViewModel @Inject constructor(
             password = uiState.password
         )
         when(result) {
-            SignUpWithEmailResult.Success -> _uiEvent.send(SignupEvent.Success)
-            SignUpWithEmailResult.WeakPassword -> { //TODO: All the error messages should be as value of a single Error object parameter
-                _uiEvent.send(SignupEvent.ShowSnackbar("Weak password"))
-            }
-            SignUpWithEmailResult.InvalidCredentials -> {
-                _uiEvent.send(SignupEvent.ShowSnackbar("Invalid email"))
-            }
-            SignUpWithEmailResult.UserCollision -> {
-                _uiEvent.send(SignupEvent.ShowSnackbar("User with this email already exist"))
-            }
-            SignUpWithEmailResult.UnknownException -> {
-                _uiEvent.send(SignupEvent.ShowSnackbar("Something went wrong"))
-            }
+            is Result.Success -> _uiEvent.send(SignupEvent.Success)
+            is Result.Error -> _uiEvent.send(SignupEvent.ShowSnackbar(result.data))
         }
     }
 }
