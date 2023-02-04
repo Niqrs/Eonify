@@ -7,9 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.niqr.auth.ui.authGraph
 import com.niqr.auth.ui.navigateToAuthGraph
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.profile.ui.ProfileGraphRoutePattern
 import com.niqr.profile.ui.navigateToProfileGraph
 import com.niqr.profile.ui.profileGraph
 import com.niqr.splash.ui.GreetingGraphRoutePattern
@@ -29,12 +32,12 @@ fun EonifyApp() {
             modifier = Modifier
                 .background(EonifyTheme.colorScheme.background),
             navController = navController,
-            startDestination = GreetingGraphRoutePattern
+            startDestination = if (Firebase.auth.currentUser != null) ProfileGraphRoutePattern
+                                else GreetingGraphRoutePattern
         ) {
             greetingGraph(
                 navController = navController,
-                onNavigateNext = navController::navigateToAuthGraph,
-                onNavigateToProfile = navController::navigateToProfileGraph
+                onNavigateNext = navController::navigateToAuthGraph
             )
             authGraph(
                 navController = navController,

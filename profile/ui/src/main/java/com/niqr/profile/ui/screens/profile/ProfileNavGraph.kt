@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-const val ProfileScreenRoutePattern = "profileScreen"
+internal const val ProfileScreenRoutePattern = "profileScreen"
 
 internal fun NavController.navigateToProfileGraph() {
     this.navigate(ProfileScreenRoutePattern) {
