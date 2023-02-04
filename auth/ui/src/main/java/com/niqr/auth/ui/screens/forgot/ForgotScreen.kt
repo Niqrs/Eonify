@@ -1,5 +1,7 @@
 package com.niqr.auth.ui.screens.forgot
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -40,7 +42,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 internal fun ForgotScreen(
     uiState: ForgotUiState,
@@ -124,16 +126,30 @@ internal fun ForgotScreen(
                 value = uiState.email,
                 onValueChange = { onAction(ForgotAction.OnEmailChange(it)) },
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading and !uiState.isSuccess,
                 hint = "Email"
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            AuthButton( // AuthButton
-                onClick = {onAction(ForgotAction.OnContinueClick) },
-                text = "Continue",
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            AnimatedContent(targetState = uiState.isSuccess) {
+                if (!it) {
+                    AuthButton( // AuthButton
+                        onClick = { onAction(ForgotAction.OnContinueClick) },
+                        text = "Continue",
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        loading = uiState.isLoading
+                    )
+                } else {
+                    Text(
+                        text = "Password reset letter has been sent to email",
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        color = EonifyTheme.colorScheme.textPrimaryHeader,
+                        textAlign = TextAlign.Center,
+                        style = EonifyTheme.typography.titleLarge
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(36.dp))
         }
     }

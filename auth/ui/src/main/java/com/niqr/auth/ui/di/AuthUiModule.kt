@@ -1,6 +1,7 @@
 package com.niqr.auth.ui.di
 
 import com.niqr.auth.domain.AuthRepository
+import com.niqr.auth.ui.handlers.ForgotEmailHandler
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
 import com.niqr.auth.ui.handlers.SignInWithEmailHandler
 import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
@@ -23,14 +24,21 @@ object AuthUiModule {
     @Provides
     fun provideSignUpWithEmailHandler(
         repo: AuthRepository
-    ) = SignUpWithEmailHandler (
+    ) = SignUpWithEmailHandler(
         repo = repo
     )
 
     @Provides
     fun provideSignInWithEmailHandler(
         repo: AuthRepository
-    ) = SignInWithEmailHandler (
+    ) = SignInWithEmailHandler(
+        repo = repo
+    )
+
+    @Provides
+    fun provideForgotEmailHandler(
+        repo: AuthRepository
+    ) = ForgotEmailHandler(
         repo = repo
     )
 }

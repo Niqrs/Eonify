@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niqr.auth.ui.handlers.ForgotEmailHandler
+import com.niqr.core_util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForgotViewModel @Inject constructor(
-
+    private val handler: ForgotEmailHandler
 ): ViewModel() {
 
     var uiState by mutableStateOf(ForgotUiState())
@@ -25,17 +27,15 @@ class ForgotViewModel @Inject constructor(
 
     fun onAction(event: ForgotAction) {
         when(event) {
-            ForgotAction.OnContinueClick -> onContinueClick()
-            is ForgotAction.OnEmailChange -> onEmailChange(event.email)
             ForgotAction.OnNavigateUp -> onNavigateUp()
+            is ForgotAction.OnEmailChange -> onEmailChange(event.email)
+            ForgotAction.OnContinueClick -> onContinueClick()
         }
     }
 
-    private fun onContinueClick() {
+    private fun onNavigateUp() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(
-                ForgotEvent.ShowSnackbar("Not yet implemented")
-            )
+            _uiEvent.send(ForgotEvent.NavigateUp)
         }
     }
 
@@ -45,9 +45,31 @@ class ForgotViewModel @Inject constructor(
         )
     }
 
-    private fun onNavigateUp() {
+    private fun onContinueClick() {
+        if (uiState.isLoading) return
+        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            _uiEvent.send(ForgotEvent.NavigateUp)
+            if (checkEmail())
+                sendEmail()
+            uiState = uiState.copy(isLoading = false)
+        }
+    }
+
+    private suspend fun checkEmail(): Boolean {
+        return if (uiState.email.isBlank()) {
+            _uiEvent.send(ForgotEvent.ShowSnackbar("Fields can't be empty"))
+            false
+        } else {
+            true
+        }
+    }
+
+    private suspend fun sendEmail() {
+        when(val result = handler.sendEmail(uiState.email)) {
+            is Result.Success -> {
+                uiState = uiState.copy(isSuccess = true)
+            }
+            is Result.Error -> _uiEvent.send(ForgotEvent.ShowSnackbar(result.data))
         }
     }
 }
