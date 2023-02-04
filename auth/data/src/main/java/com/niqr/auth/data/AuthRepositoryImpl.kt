@@ -1,15 +1,18 @@
 package com.niqr.auth.data
 
 import android.util.Log
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue.serverTimestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niqr.auth.domain.AuthRepository
+import com.niqr.auth.domain.model.SendPasswordResetEmailResult
 import com.niqr.auth.domain.model.SignInWIthEmailResult
 import com.niqr.auth.domain.model.SignUpWithEmailResult
 import com.niqr.core.FirebaseConstants.CREATED_AT
@@ -56,9 +59,9 @@ class AuthRepositoryImpl @Inject constructor(
             SignInWIthEmailResult.Success
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             SignInWIthEmailResult.InvalidCredentials
-        } /*catch (e: FirebaseAuthInvalidUserException) {
-            false
-        }*/ catch (e: Exception) {
+        } catch (e: FirebaseAuthInvalidUserException) {
+            SignInWIthEmailResult.InvalidUser
+        } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             SignInWIthEmailResult.UnknownException
         }
@@ -85,6 +88,24 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             SignUpWithEmailResult.UnknownException
+        }
+    }
+
+    override suspend fun firebaseSendPasswordResetEmail(email: String): SendPasswordResetEmailResult {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            SendPasswordResetEmailResult.Success
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Log.e(TAG, e.message.toString())
+            SendPasswordResetEmailResult.InvalidEmail
+        } catch (e: FirebaseAuthInvalidUserException) {
+            Log.e(TAG, e.message.toString())
+            SendPasswordResetEmailResult.InvalidUser
+        } catch (e: FirebaseTooManyRequestsException) {
+            SendPasswordResetEmailResult.TooManyRequests
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            SendPasswordResetEmailResult.UnknownException
         }
     }
 
