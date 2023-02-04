@@ -6,7 +6,7 @@ import androidx.navigation.navigation
 import com.niqr.profile.ui.screens.profile.ProfileScreenRoutePattern
 import com.niqr.profile.ui.screens.profile.profileScreen
 
-private const val ProfileGraphRoutePattern = "profile"
+const val ProfileGraphRoutePattern = "profile"
 
 fun NavController.navigateToProfileGraph() {
     this.navigate(ProfileGraphRoutePattern) {
