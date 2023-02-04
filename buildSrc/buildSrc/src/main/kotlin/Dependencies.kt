@@ -10,9 +10,11 @@ object Dependencies {
 
         private const val activityComposeVersion = "1.6.1"
         private const val coreKtxVersion = "1.9.0"
+        private const val preferenceVersion = "1.2.0"
 
         const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
         const val coreKtx = "androidx.core:core-ktx:$coreKtxVersion"
+        const val preference = "androidx.preference:preference-ktx:$preferenceVersion"
     }
 
     object Hilt {

@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.niqr.auth.ui.AuthGraphRoutePattern
 import com.niqr.auth.ui.authGraph
 import com.niqr.auth.ui.navigateToAuthGraph
 import com.niqr.core_ui.theme.EonifyTheme
@@ -20,7 +21,9 @@ import com.niqr.splash.ui.greetingGraph
 import com.niqr.splash.ui.navigateToGreetingGraph
 
 @Composable
-fun EonifyApp() {
+fun EonifyApp(
+    isFirstLaunch: Boolean
+) {
     val navController = rememberNavController()
 
     // A surface container using the 'background' color from the theme
@@ -32,8 +35,10 @@ fun EonifyApp() {
             modifier = Modifier
                 .background(EonifyTheme.colorScheme.background),
             navController = navController,
-            startDestination = if (Firebase.auth.currentUser != null) ProfileGraphRoutePattern
-                                else GreetingGraphRoutePattern
+            startDestination = startDestination(
+                authenticated = Firebase.auth.currentUser != null,
+                isFirstLaunch = isFirstLaunch
+            )
         ) {
             greetingGraph(
                 navController = navController,
@@ -50,3 +55,10 @@ fun EonifyApp() {
         }
     }
 }
+
+private fun startDestination(
+    authenticated: Boolean,
+    isFirstLaunch: Boolean
+) = if (authenticated) ProfileGraphRoutePattern
+    else if (isFirstLaunch) GreetingGraphRoutePattern
+    else AuthGraphRoutePattern

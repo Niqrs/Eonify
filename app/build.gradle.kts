@@ -74,6 +74,7 @@ dependencies {
 
     implementation(Dependencies.Android.coreKtx)
     implementation(Dependencies.Android.activityCompose)
+    implementation(Dependencies.Android.preference)
 
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.tooling)
