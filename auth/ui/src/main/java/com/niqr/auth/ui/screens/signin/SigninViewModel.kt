@@ -119,9 +119,8 @@ class SigninViewModel @Inject constructor(
         if (uiState.isLoading) return
         uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            if (checkFields()) {
+            if (checkFields())
                 login()
-            }
             uiState = uiState.copy(isLoading = false)
         }
     }

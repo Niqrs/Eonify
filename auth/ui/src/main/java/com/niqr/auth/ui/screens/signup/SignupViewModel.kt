@@ -133,9 +133,8 @@ class SignupViewModel @Inject constructor(
         if (uiState.isLoading) return
         uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            if (checkFields()) {
+            if (checkFields())
                 createAccount()
-            }
             uiState = uiState.copy(isLoading = false)
         }
     }

@@ -14,6 +14,8 @@ class SignInWithEmailHandler @Inject constructor(
         return when(repo.firebaseSignInWithEmailAndPassword(email, password)) {
             SignInWIthEmailResult.Success -> Result.Success(Unit)
             SignInWIthEmailResult.InvalidCredentials -> Result.Error("Invalid email or password")
+            SignInWIthEmailResult.InvalidUser -> Result.Error("User has been disabled or deleted")
+            SignInWIthEmailResult.TooManyRequests -> Result.Error("Too many request. Try again later")
             SignInWIthEmailResult.UnknownException -> Result.Error("Something went wrong")
         }
     }

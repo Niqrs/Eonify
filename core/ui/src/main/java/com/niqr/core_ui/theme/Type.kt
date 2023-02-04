@@ -40,14 +40,17 @@ internal val Typography = Typography(
                 letterSpacing = 1.sp,
                 textAlign = TextAlign.Center
         ),
+
+
+        titleLarge = TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W500,
+                fontSize = 22.sp,
+                lineHeight = 28.sp,
+                letterSpacing = 0.65.sp,
+        ),
+
         /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
