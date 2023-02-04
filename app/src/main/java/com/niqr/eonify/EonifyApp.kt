@@ -18,7 +18,6 @@ import com.niqr.profile.ui.navigateToProfileGraph
 import com.niqr.profile.ui.profileGraph
 import com.niqr.splash.ui.GreetingGraphRoutePattern
 import com.niqr.splash.ui.greetingGraph
-import com.niqr.splash.ui.navigateToGreetingGraph
 
 @Composable
 fun EonifyApp(
@@ -50,7 +49,7 @@ fun EonifyApp(
             )
             profileGraph(
                 navController = navController,
-                onSignOut = navController::navigateToGreetingGraph
+                onSignOut = navController::navigateToAuthGraph
             )
         }
     }
