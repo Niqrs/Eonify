@@ -16,6 +16,7 @@ class SignUpWithEmailHandler @Inject constructor(
             SignUpWithEmailResult.WeakPassword -> Result.Error("Weak password")
             SignUpWithEmailResult.InvalidCredentials -> Result.Error("Invalid email")
             SignUpWithEmailResult.UserCollision -> Result.Error("User with this email already exist")
+            SignUpWithEmailResult.TooManyRequests -> Result.Error("Too many request. Try again later")
             SignUpWithEmailResult.UnknownException -> Result.Error("Something went wrong")
         }
     }

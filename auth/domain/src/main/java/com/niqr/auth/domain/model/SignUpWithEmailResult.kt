@@ -5,5 +5,6 @@ sealed class SignUpWithEmailResult {
     object WeakPassword: SignUpWithEmailResult()
     object InvalidCredentials: SignUpWithEmailResult()
     object UserCollision: SignUpWithEmailResult()
+    object TooManyRequests: SignUpWithEmailResult()
     object UnknownException: SignUpWithEmailResult()
 }

@@ -61,6 +61,8 @@ class AuthRepositoryImpl @Inject constructor(
             SignInWIthEmailResult.InvalidCredentials
         } catch (e: FirebaseAuthInvalidUserException) {
             SignInWIthEmailResult.InvalidUser
+        } catch (e: FirebaseTooManyRequestsException) {
+            SignInWIthEmailResult.TooManyRequests
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             SignInWIthEmailResult.UnknownException
@@ -85,6 +87,8 @@ class AuthRepositoryImpl @Inject constructor(
             SignUpWithEmailResult.InvalidCredentials
         } catch (e: FirebaseAuthUserCollisionException) {
             SignUpWithEmailResult.UserCollision
+        } catch (e: FirebaseTooManyRequestsException) {
+            SignUpWithEmailResult.TooManyRequests
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             SignUpWithEmailResult.UnknownException
