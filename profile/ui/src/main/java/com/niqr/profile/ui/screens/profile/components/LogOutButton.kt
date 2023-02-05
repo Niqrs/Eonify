@@ -1,6 +1,7 @@
 package com.niqr.profile.ui.screens.profile.components
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -11,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.niqr.core_ui.theme.EonifyTheme
-import com.niqr.profile.ui.screens.profile.ProfileAction
 
 @Composable
 fun LogOutButton(
@@ -21,7 +21,8 @@ fun LogOutButton(
     Button(
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.BottomCenter),
+            .wrapContentSize(Alignment.BottomCenter)
+            .padding(bottom = 12.dp),
         colors = ButtonDefaults.buttonColors(
             contentColor = EonifyTheme.colorScheme.onPrimary,
             containerColor = EonifyTheme.colorScheme.primary

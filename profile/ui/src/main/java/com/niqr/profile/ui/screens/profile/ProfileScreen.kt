@@ -40,6 +40,7 @@ import com.niqr.profile.ui.R
 import com.niqr.profile.ui.components.ProfileRippleTheme
 import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
 import com.niqr.profile.ui.screens.profile.components.LogOutButton
+import com.niqr.profile.ui.screens.profile.components.ProfileDivider
 import com.niqr.profile.ui.screens.profile.components.ProfileTitle
 import kotlinx.coroutines.flow.Flow
 
@@ -156,6 +157,11 @@ internal fun ProfileScreen(
                 AccountInfoItem(
                     text = uiState.user.email,
                     hint = "Email",
+                )
+                ProfileDivider()
+                AccountInfoItem(
+                    text = uiState.user.bio,
+                    hint = "Add a few words about yourself",
                     onClick = {}
                 )
                 LogOutButton(
