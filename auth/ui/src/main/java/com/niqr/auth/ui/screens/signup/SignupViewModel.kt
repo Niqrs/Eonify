@@ -35,7 +35,8 @@ class SignupViewModel @Inject constructor(
         when(event) {
             SignupAction.OnNavigateToSignin -> onNavigateToSignin()
 
-            is SignupAction.OnNameChange -> onNameChange(event.name)
+            is SignupAction.OnFirstNameChange -> onFirstNameChange(event.name)
+            is SignupAction.OnOptionalNameChange -> onOptionalNameChange(event.name)
             is SignupAction.OnEmailChange -> onEmailChange(event.email)
             is SignupAction.OnPasswordChange -> onPasswordChange(event.password)
             is SignupAction.OnPasswordVisibilityChange -> onPasswordVisibilityChange(event.visible)
@@ -55,9 +56,15 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun onNameChange(name: String) {
+    private fun onFirstNameChange(name: String) {
         uiState = uiState.copy(
-            name = name.filterWhitespaces()
+            firstName = name.filterWhitespaces()
+        )
+    }
+
+    private fun onOptionalNameChange(name: String) {
+        uiState = uiState.copy(
+            optionalName = name.filterWhitespaces()
         )
     }
 
@@ -140,7 +147,7 @@ class SignupViewModel @Inject constructor(
     }
 
     private suspend fun checkFields(): Boolean {
-        return if (uiState.name.isBlank() or uiState.email.isBlank() or uiState.password.isBlank()) {
+        return if (uiState.firstName.isBlank() or uiState.email.isBlank() or uiState.password.isBlank()) {
             _uiEvent.send(SignupEvent.ShowSnackbar("Fields can't be empty"))
             false
         } else if (!uiState.agreedWithPolicy) {
