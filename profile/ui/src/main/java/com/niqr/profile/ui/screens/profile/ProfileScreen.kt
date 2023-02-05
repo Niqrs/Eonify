@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +39,7 @@ import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.profile.ui.R
 import com.niqr.profile.ui.components.ProfileRippleTheme
 import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
+import com.niqr.profile.ui.screens.profile.components.LogOutButton
 import com.niqr.profile.ui.screens.profile.components.ProfileTitle
 import kotlinx.coroutines.flow.Flow
 
@@ -158,13 +158,9 @@ internal fun ProfileScreen(
                     hint = "Email",
                     onClick = {}
                 )
-                Button(
-                    onClick = {
-                        onAction(ProfileAction.OnSignOut)
-                    }
-                ) {
-                    Text(text = "Log Out")
-                }
+                LogOutButton(
+                    onClick = { onAction(ProfileAction.OnSignOut) }
+                )
             }
         }
     }
