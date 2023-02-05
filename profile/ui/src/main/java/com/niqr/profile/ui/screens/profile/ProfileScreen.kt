@@ -1,7 +1,6 @@
 package com.niqr.profile.ui.screens.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,8 +37,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.core_ui.theme.Primary30
 import com.niqr.profile.ui.R
 import com.niqr.profile.ui.components.ProfileRippleTheme
+import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,9 +66,7 @@ internal fun ProfileScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize()
         ) {
             Box(
                 modifier = Modifier
@@ -148,16 +147,30 @@ internal fun ProfileScreen(
                 }
             }
 
-            Text(
-                text = uiState.user.email,
-                color = EonifyTheme.colorScheme.textMediumContrast
-            )
-            Button(
-                onClick = {
-                    onAction(ProfileAction.OnSignOut)
-                }
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .weight(1f)
             ) {
-                Text(text = "Log Out")
+                Text(
+                    modifier = Modifier
+                        .padding(start = 16.dp),
+                    text = "Account",
+                    style = EonifyTheme.typography.titleMedium,
+                    color = Primary30
+                )
+                AccountInfoItem(
+                    text = uiState.user.email,
+                    hint = "Email",
+                    onClick = {}
+                )
+                Button(
+                    onClick = {
+                        onAction(ProfileAction.OnSignOut)
+                    }
+                ) {
+                    Text(text = "Log Out")
+                }
             }
         }
     }
