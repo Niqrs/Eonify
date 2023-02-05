@@ -55,6 +55,8 @@ object Dependencies {
         const val bom = "com.google.firebase:firebase-bom:$bomVersion"
         const val auth = "com.google.firebase:firebase-auth-ktx"
         const val firestore = "com.google.firebase:firebase-firestore-ktx"
+        const val messaging = "com.google.firebase:firebase-messaging-ktx"
+        const val analytics = "com.google.firebase:firebase-analytics-ktx"
     }
 
     object PlayServices {
