@@ -18,7 +18,7 @@ class ProfileViewModel @Inject constructor(
     val repo: ProfileRepository
 ): ViewModel() {
 
-    var uiState by mutableStateOf(ProfileUiState(repo.user))
+    var uiState by mutableStateOf(ProfileUiState(repo.user.toUiState()))
         private set
 
     private val _uiEvent = Channel<ProfileEvent>()

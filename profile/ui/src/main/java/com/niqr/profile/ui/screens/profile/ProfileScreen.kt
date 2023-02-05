@@ -1,17 +1,25 @@
 package com.niqr.profile.ui.screens.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
+import com.niqr.profile.ui.screens.profile.components.LogOutButton
+import com.niqr.profile.ui.screens.profile.components.ProfileDivider
+import com.niqr.profile.ui.screens.profile.components.ProfileImage
+import com.niqr.profile.ui.screens.profile.components.ProfileTitle
+import com.niqr.profile.ui.screens.profile.components.ProfileTopAppBar
+import com.niqr.profile.ui.screens.profile.components.ProfileUsername
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -36,19 +44,45 @@ internal fun ProfileScreen(
         contentAlignment = Alignment.Center
     ) {
         Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(text = uiState.user.uid, color = EonifyTheme.colorScheme.textMediumContrast)
-            Text(text = uiState.user.photoUrl, color = EonifyTheme.colorScheme.textMediumContrast)
-            Text(text = uiState.user.displayName, color = EonifyTheme.colorScheme.textMediumContrast)
-            Text(text = uiState.user.email, color = EonifyTheme.colorScheme.textMediumContrast)
-            Button(
-                onClick = {
-                    onAction(ProfileAction.OnSignOut)
-                }
+            Box(
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .fillMaxWidth(),
             ) {
-                Text(text = "SignOut")
+                ProfileImage(
+                    photoUrl = uiState.user.photoUrl
+                )
+
+                ProfileTopAppBar(
+                    onMoreClick = {}
+                )
+
+                ProfileUsername(
+                    name = uiState.user.displayName
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .weight(1f)
+            ) {
+                ProfileTitle(text = "Account")
+                AccountInfoItem(
+                    text = uiState.user.email,
+                    hint = "Email",
+                )
+                ProfileDivider()
+                AccountInfoItem(
+                    text = uiState.user.bio,
+                    hint = "Add a few words about yourself",
+                    onClick = {}
+                )
+                LogOutButton(
+                    onClick = { onAction(ProfileAction.OnSignOut) }
+                )
             }
         }
     }

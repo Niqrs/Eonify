@@ -181,13 +181,23 @@ fun SignupScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            AuthTextField( // Name TextField
-                value = uiState.name,
-                onValueChange = { onAction(SignupAction.OnNameChange(it)) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !uiState.isLoading,
-                hint = "Name"
-            )
+            Row() {
+                AuthTextField( // First Name TextField
+                    value = uiState.firstName,
+                    onValueChange = { onAction(SignupAction.OnFirstNameChange(it)) },
+                    modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
+                    hint = "First Name"
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                AuthTextField( // Optional Name TextField
+                    value = uiState.optionalName,
+                    onValueChange = { onAction(SignupAction.OnOptionalNameChange(it)) },
+                    modifier = Modifier.weight(1f),
+                    enabled = !uiState.isLoading,
+                    hint = "Optional Name"
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             AuthTextField( // Email TextField
                 value = uiState.email,

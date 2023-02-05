@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FieldValue.serverTimestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.niqr.auth.domain.AuthRepository
@@ -70,6 +71,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
+        name: String,
         email: String,
         password: String
     ): SignUpWithEmailResult {
@@ -77,6 +79,9 @@ class AuthRepositoryImpl @Inject constructor(
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
             if (isNewUser) {
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name).build();
+                auth.currentUser?.updateProfile(profileUpdates)?.await()
                 createUserInFirestore()
                 auth.currentUser?.sendEmailVerification()
             }
@@ -115,7 +120,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     private suspend fun createUserInFirestore() {
         auth.currentUser?.apply {
-            val user = toUser()
+            val user = toUser().toMutableMap()
             db.collection(USERS).document(uid).set(user).await()
         }
     }

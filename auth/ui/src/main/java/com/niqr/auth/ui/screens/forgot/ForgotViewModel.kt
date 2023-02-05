@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.niqr.auth.ui.handlers.ForgotEmailHandler
 import com.niqr.core_util.Result
+import com.niqr.core_util.filterWhitespaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -41,7 +42,7 @@ class ForgotViewModel @Inject constructor(
 
     private fun onEmailChange(email: String) {
         uiState = uiState.copy(
-            email = email
+            email = email.filterWhitespaces().take(64)
         )
     }
 

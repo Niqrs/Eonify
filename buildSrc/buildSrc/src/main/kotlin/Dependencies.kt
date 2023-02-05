@@ -55,6 +55,8 @@ object Dependencies {
         const val bom = "com.google.firebase:firebase-bom:$bomVersion"
         const val auth = "com.google.firebase:firebase-auth-ktx"
         const val firestore = "com.google.firebase:firebase-firestore-ktx"
+        const val messaging = "com.google.firebase:firebase-messaging-ktx"
+        const val analytics = "com.google.firebase:firebase-analytics-ktx"
     }
 
     object PlayServices {
@@ -69,5 +71,11 @@ object Dependencies {
     object Testing {
         const val junit4 = "junit:junit:4.13.2"
         const val junitAndroidExt = "androidx.test.ext:junit:1.1.5"
+    }
+
+    object Other {
+        private const val coilVersion = "2.2.2"
+
+        const val coil = "io.coil-kt:coil-compose:$coilVersion"
     }
 }

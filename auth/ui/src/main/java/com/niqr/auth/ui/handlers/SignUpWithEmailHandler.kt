@@ -10,8 +10,8 @@ class SignUpWithEmailHandler @Inject constructor(
     private val repo: AuthRepository
 ) {
 
-    suspend fun signUp(email: String, password: String): EmailSignUpResult {
-        return when(repo.firebaseSignUpWithEmailAndPassword(email, password)) {
+    suspend fun signUp(name: String, email: String, password: String): EmailSignUpResult {
+        return when(repo.firebaseSignUpWithEmailAndPassword(name, email, password)) {
             SignUpWithEmailResult.Success -> Result.Success(Unit)
             SignUpWithEmailResult.WeakPassword -> Result.Error("Weak password")
             SignUpWithEmailResult.InvalidCredentials -> Result.Error("Invalid email")
