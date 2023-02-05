@@ -49,6 +49,20 @@ internal val Typography = Typography(
                 lineHeight = 28.sp,
                 letterSpacing = 0.65.sp,
         ),
+        titleMedium = TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W500,
+                fontSize = 17.sp,
+                lineHeight = 19.sp,
+                letterSpacing = 0.3.sp,
+        ),
+        titleSmall = TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.W400,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                letterSpacing = 0.25.sp,
+        )
 
         /* Other default text styles to override
     labelSmall = TextStyle(

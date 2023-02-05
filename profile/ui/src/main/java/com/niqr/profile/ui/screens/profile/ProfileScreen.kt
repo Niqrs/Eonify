@@ -37,10 +37,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.niqr.core_ui.theme.EonifyTheme
-import com.niqr.core_ui.theme.Primary30
 import com.niqr.profile.ui.R
 import com.niqr.profile.ui.components.ProfileRippleTheme
 import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
+import com.niqr.profile.ui.screens.profile.components.ProfileTitle
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,13 +152,7 @@ internal fun ProfileScreen(
                     .padding(vertical = 16.dp)
                     .weight(1f)
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp),
-                    text = "Account",
-                    style = EonifyTheme.typography.titleMedium,
-                    color = Primary30
-                )
+                ProfileTitle(text = "Account")
                 AccountInfoItem(
                     text = uiState.user.email,
                     hint = "Email",
