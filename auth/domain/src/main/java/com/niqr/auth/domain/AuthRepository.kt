@@ -10,6 +10,6 @@ interface AuthRepository {
 
     suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): Boolean
     suspend fun firebaseSignInWithEmailAndPassword(email: String, password: String): SignInWIthEmailResult
-    suspend fun firebaseSignUpWithEmailAndPassword(email: String, password: String): SignUpWithEmailResult
+    suspend fun firebaseSignUpWithEmailAndPassword(name: String, email: String, password: String): SignUpWithEmailResult
     suspend fun firebaseSendPasswordResetEmail(email: String): SendPasswordResetEmailResult
 }

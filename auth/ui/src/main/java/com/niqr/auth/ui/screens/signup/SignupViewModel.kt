@@ -58,25 +58,25 @@ class SignupViewModel @Inject constructor(
 
     private fun onFirstNameChange(name: String) {
         uiState = uiState.copy(
-            firstName = name.filterWhitespaces()
+            firstName = name.filterWhitespaces().take(32)
         )
     }
 
     private fun onOptionalNameChange(name: String) {
         uiState = uiState.copy(
-            optionalName = name.filterWhitespaces()
+            optionalName = name.filterWhitespaces().take(32)
         )
     }
 
     private fun onEmailChange(email: String) {
         uiState = uiState.copy(
-            email = email.filterWhitespaces()
+            email = email.filterWhitespaces().take(64)
         )
     }
 
     private fun onPasswordChange(password: String) {
         uiState = uiState.copy(
-            password = password.filterWhitespaces()
+            password = password.filterWhitespaces().take(32)
         )
     }
 
@@ -160,12 +160,21 @@ class SignupViewModel @Inject constructor(
 
     private suspend fun createAccount() {
         val result = signUpWithEmailHandler.signUp(
+            name = userName(),
             email = uiState.email,
             password = uiState.password
         )
         when(result) {
             is Result.Success -> _uiEvent.send(SignupEvent.Success)
             is Result.Error -> _uiEvent.send(SignupEvent.ShowSnackbar(result.data))
+        }
+    }
+
+    private fun userName(): String {
+        return if (uiState.optionalName.isBlank()) {
+            uiState.firstName
+        } else {
+            "${uiState.firstName} ${uiState.optionalName}"
         }
     }
 }

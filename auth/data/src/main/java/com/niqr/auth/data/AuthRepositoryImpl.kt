@@ -70,6 +70,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun firebaseSignUpWithEmailAndPassword(
+        name: String,
         email: String,
         password: String
     ): SignUpWithEmailResult {
@@ -77,7 +78,7 @@ class AuthRepositoryImpl @Inject constructor(
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
             if (isNewUser) {
-                createUserInFirestore()
+                createUserInFirestore(name)
                 auth.currentUser?.sendEmailVerification()
             }
             SignUpWithEmailResult.Success
@@ -113,9 +114,10 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun createUserInFirestore() {
+    private suspend fun createUserInFirestore(name: String? = null) {
         auth.currentUser?.apply {
-            val user = toUser()
+            val user = toUser().toMutableMap()
+            name?.let { user[DISPLAY_NAME] = name }
             db.collection(USERS).document(uid).set(user).await()
         }
     }
