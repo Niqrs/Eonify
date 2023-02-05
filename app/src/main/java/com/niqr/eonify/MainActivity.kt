@@ -1,6 +1,7 @@
 package com.niqr.eonify
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.niqr.core_ui.theme.EonifyTheme
@@ -15,6 +16,10 @@ class MainActivity : ComponentActivity() {
                 EonifyApp(isFirstLaunch())
             }
         }
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
     }
 
     private fun isFirstLaunch(): Boolean {
