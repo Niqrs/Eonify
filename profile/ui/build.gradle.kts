@@ -11,4 +11,6 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":profile:domain"))
+
+    implementation(Dependencies.Other.coil)
 }

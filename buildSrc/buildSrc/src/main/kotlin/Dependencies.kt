@@ -72,4 +72,10 @@ object Dependencies {
         const val junit4 = "junit:junit:4.13.2"
         const val junitAndroidExt = "androidx.test.ext:junit:1.1.5"
     }
+
+    object Other {
+        private const val coilVersion = "2.2.2"
+
+        const val coil = "io.coil-kt:coil-compose:$coilVersion"
+    }
 }
