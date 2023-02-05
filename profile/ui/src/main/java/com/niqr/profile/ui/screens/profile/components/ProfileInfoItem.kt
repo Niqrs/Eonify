@@ -30,7 +30,8 @@ fun AccountInfoItem(
                 indication = rememberRipple(),
                 enabled = onClick != null,
                 onClick = onClick ?: {}
-            ).padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
     ) {
         Text(
@@ -43,5 +44,6 @@ fun AccountInfoItem(
             style = EonifyTheme.typography.titleSmall,
             color = EonifyTheme.colorScheme.textHint
         )
+        Spacer(modifier = Modifier.height(2.dp))
     }
 }
