@@ -27,12 +27,14 @@ internal fun ProfileScreen(
     uiState: ProfileUiState,
     uiEvent: Flow<ProfileEvent>,
     onAction: (ProfileAction) -> Unit,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    onOpenBio: () -> Unit
 ) {
     LaunchedEffect(true) {
         uiEvent.collect {
             when(it) {
                 ProfileEvent.SignOut -> onSignOut()
+                ProfileEvent.OpenBio -> onOpenBio()
             }
         }
     }
@@ -78,7 +80,7 @@ internal fun ProfileScreen(
                 AccountInfoItem(
                     text = uiState.user.bio,
                     hint = "Add a few words about yourself",
-                    onClick = {}
+                    onClick = { onAction(ProfileAction.OnOpenBio) }
                 )
                 LogOutButton(
                     onClick = { onAction(ProfileAction.OnSignOut) }
