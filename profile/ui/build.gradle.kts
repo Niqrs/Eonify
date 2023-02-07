@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":profile:domain"))
 
     implementation(Dependencies.Other.coil)
+    api(Dependencies.Accompanist.systemUiController)
 }

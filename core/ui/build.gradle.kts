@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = ProjectConfig.namespace("core.ui")
 }
+
+dependencies {
+    implementation(Dependencies.Accompanist.systemUiController)
+}

@@ -29,7 +29,7 @@ object Dependencies {
 
     object Compose {
         private const val version = "1.4.0-alpha04"
-        private const val material3Version = "1.1.0-alpha04"
+        private const val material3Version = "1.1.0-alpha05"
         private const val navigationVersion = "2.6.0-alpha04"
 
         const val animation = "androidx.compose.animation:animation:$version"
@@ -43,10 +43,11 @@ object Dependencies {
     }
 
     object Accompanist {
-        private const val version = "0.29.0-alpha"
+        private const val version = "0.29.1-alpha"
 
         const val pager = "com.google.accompanist:accompanist-pager:$version"
         const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$version"
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     }
 
     object Firebase {

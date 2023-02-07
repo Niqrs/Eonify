@@ -1,15 +1,12 @@
 package com.niqr.core_ui.theme
 
-import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.niqr.core_ui.theme.EonifyTheme.typography
 
 @Composable
@@ -20,14 +17,6 @@ fun EonifyTheme(
     val colorScheme = when {
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-        }
     }
 
     CompositionLocalProvider(
@@ -46,4 +35,11 @@ object EonifyTheme {
     val typography: Typography
         @Composable
         get() = LocalTypography.current
+}
+
+fun SystemUiController.setDefaultStatusBarColor(darkTheme: Boolean) {
+    this.setStatusBarColor(
+        color = Color.Transparent,
+        darkIcons = !darkTheme
+    )
 }
