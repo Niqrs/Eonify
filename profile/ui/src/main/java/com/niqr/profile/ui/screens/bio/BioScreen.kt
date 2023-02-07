@@ -1,7 +1,16 @@
 package com.niqr.profile.ui.screens.bio
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import com.niqr.profile.ui.components.ProfileTextField
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.niqr.profile.ui.screens.bio.components.BioTextField
+import com.niqr.profile.ui.screens.bio.components.BioTopAppBar
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -12,8 +21,33 @@ fun BioScreen(
     onNavigateUp: () -> Unit,
     onApply: () -> Unit
 ) {
-    ProfileTextField(
-        value = uiState.bio,
-        onValueChange = { onAction(BioAction.OnBioChange(it)) }
-    )
+    LaunchedEffect(true) {
+        uiEvent.collect {
+            when(it) {
+                BioEvent.NavigateUp -> onNavigateUp()
+                BioEvent.OnApply -> onApply()
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        BioTopAppBar(
+            onNavigateUp = { onAction(BioAction.OnNavigateUp) },
+            onApply = { onAction(BioAction.OnApply) }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
+            BioTextField(
+                value = uiState.bio,
+                onValueChange = { onAction(BioAction.OnBioChange(it)) },
+                charactersLeft = uiState.charactersLeft
+            )
+        }
+    }
 }
