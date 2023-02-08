@@ -7,14 +7,14 @@ import androidx.navigation.compose.composable
 
 internal const val ProfileScreenRoutePattern = "profileScreen"
 
-internal fun NavController.navigateToProfileGraph() {
+internal fun NavController.navigateToProfileScreen() {
     this.navigate(ProfileScreenRoutePattern) {
         popUpTo(0)
         launchSingleTop = true
     }
 }
 
-internal fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit) {
+internal fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit, onOpenBio: () -> Unit) {
     composable(ProfileScreenRoutePattern) {
         val viewModel: ProfileViewModel = hiltViewModel()
 
@@ -22,7 +22,8 @@ internal fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit) {
             uiState = viewModel.uiState,
             uiEvent = viewModel.uiEvent,
             onAction = viewModel::onAction,
-            onSignOut = onSignOut
+            onSignOut = onSignOut,
+            onOpenBio = onOpenBio
         )
     }
 }

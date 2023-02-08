@@ -13,5 +13,6 @@ dependencies {
 
     implementation(platform(Dependencies.Firebase.bom)) //TODO: manage it
     implementation(Dependencies.Firebase.auth)
+    implementation(Dependencies.Firebase.firestore)
     implementation(Dependencies.PlayServices.auth)
 }

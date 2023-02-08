@@ -10,6 +10,7 @@ internal val LightColorScheme = EonifyColorScheme(
     surface = Primary5,
     background = Color.White,
     onBackground = Gray90,
+    topAppBar = Color.White,
 
     divider = Gray20,
 
@@ -37,6 +38,7 @@ internal val DarkColorScheme = EonifyColorScheme(
     surface = Gray80,
     background = Gray90,
     onBackground = Gray5,
+    topAppBar = Gray85,
 
     divider = Gray40,
 
@@ -64,6 +66,7 @@ data class EonifyColorScheme(
     val surface: Color,
     val background: Color,
     val onBackground: Color,
+    val topAppBar: Color,
 
     val divider: Color,
 

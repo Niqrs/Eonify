@@ -8,9 +8,9 @@ data class ProfileUiState(
 
 data class UserUiState(
     val photoUrl: String = "",
-    val displayName: String = "Name",
-    val email: String = "Email",
-    val bio: String = "Bio"
+    val displayName: String = "",
+    val email: String = "",
+    val bio: String = ""
 )
 
 fun User.toUiState() =

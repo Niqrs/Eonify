@@ -15,11 +15,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val repo: ProfileRepository
+    private val repo: ProfileRepository
 ): ViewModel() {
 
     var uiState by mutableStateOf(ProfileUiState(repo.user.toUiState()))
         private set
+
+    init {
+        viewModelScope.launch {
+            repo.userFlow().collect {
+                when(it != null) {
+                    true -> {
+                        uiState = uiState.copy(
+                            user = it.toUiState()
+                        )
+                    }
+                    false -> {
+
+                    }
+                }
+            }
+        }
+    }
 
     private val _uiEvent = Channel<ProfileEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -27,6 +44,7 @@ class ProfileViewModel @Inject constructor(
     fun onAction(event: ProfileAction) {
         when (event) {
             ProfileAction.OnSignOut -> onSignOut()
+            ProfileAction.OnOpenBio -> onOpenBio()
         }
     }
 
@@ -35,6 +53,12 @@ class ProfileViewModel @Inject constructor(
             val result = repo.signOut()
             if (result)
                 _uiEvent.send(ProfileEvent.SignOut)
+        }
+    }
+
+    private fun onOpenBio() {
+        viewModelScope.launch {
+            _uiEvent.send(ProfileEvent.OpenBio)
         }
     }
 }
