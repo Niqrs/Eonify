@@ -21,6 +21,23 @@ class ProfileViewModel @Inject constructor(
     var uiState by mutableStateOf(ProfileUiState(repo.user.toUiState()))
         private set
 
+    init {
+        viewModelScope.launch {
+            repo.userFlow().collect {
+                when(it != null) {
+                    true -> {
+                        uiState = uiState.copy(
+                            user = it.toUiState()
+                        )
+                    }
+                    false -> {
+
+                    }
+                }
+            }
+        }
+    }
+
     private val _uiEvent = Channel<ProfileEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 

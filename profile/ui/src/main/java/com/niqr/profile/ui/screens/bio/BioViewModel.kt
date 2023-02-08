@@ -5,19 +5,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.niqr.profile.domain.ProfileRepository
+import com.niqr.profile.ui.screens.profile.toUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BioViewModel @Inject constructor(
-
+    private val repo: ProfileRepository
 ): ViewModel() {
 
     var uiState by mutableStateOf(BioUiState())
         private set
+
+    init {
+        viewModelScope.launch {
+            repo.userFlow().take(1).collect {
+                it?.let {
+                    onBioChange(it.toUiState().bio)
+                }
+            }
+        }
+    }
 
     private val _uiEvent = Channel<BioEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -32,6 +45,7 @@ class BioViewModel @Inject constructor(
 
     private fun onApply() {
         viewModelScope.launch {
+            repo.saveBio(uiState.bio)
             _uiEvent.send(BioEvent.OnApply)
         }
     }
