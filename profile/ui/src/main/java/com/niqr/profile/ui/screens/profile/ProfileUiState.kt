@@ -15,8 +15,8 @@ data class UserUiState(
 
 fun User.toUiState() =
     UserUiState(
-        photoUrl = this.photoUrl,
-        displayName = this.displayName,
-        email = this.email,
-        bio = this.bio.ifBlank { "Bio" }
+        photoUrl = this.photoUrl ?: "",
+        displayName = this.displayName ?: "",
+        email = this.email ?: "",
+        bio = this.bio?.ifBlank { "Bio" }  ?: ""
     )

@@ -1,5 +1,5 @@
 package com.niqr.auth.ui.handlers.model
 
-import com.niqr.core_util.Result
+import arrow.core.Either
 
-typealias GoogleAuthResult = Result<Unit, String?>
+typealias GoogleAuthResult = Either<String?, Unit>

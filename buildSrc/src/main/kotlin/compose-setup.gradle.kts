@@ -20,7 +20,4 @@ dependencies {
     implementation(Dependencies.Compose.ui)
 
     implementation(Dependencies.Hilt.navigation)
-//        implementation(Dependencies.Android.Compose.tooling)
-//        implementation(Dependencies.Android.Compose.icons)
-//        implementation(compose.foundation)
 }

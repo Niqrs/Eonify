@@ -3,12 +3,12 @@ package com.niqr.auth.ui.handlers
 import android.app.Activity
 import android.util.Log
 import androidx.activity.result.ActivityResult
+import arrow.core.Either
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.niqr.auth.domain.AuthRepository
 import com.niqr.auth.ui.handlers.model.GoogleAuthResult
-import com.niqr.core_util.Result
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -24,21 +24,21 @@ class GoogleAuthResultHandler @Inject constructor(
                 val signInWithGoogleResponse = repo.firebaseSignInWithGoogle(googleCredentials)
 
                 if (signInWithGoogleResponse) {
-                    Result.Success(Unit)
+                    Either.Right(Unit)
                 } else {
-                    Result.Error("Something went wrong")
+                    Either.Left("Something went wrong")
                 }
             } catch (e: ApiException) {
                 Log.e(TAG, e.message.toString())
-                Result.Error("Something went wrong")
+                Either.Left("Something went wrong")
             }
             Activity.RESULT_CANCELED -> {
                 Log.w(TAG, "Activity Canceled")
-                Result.Error(null)
+                Either.Left(null)
             }
             else -> {
                 Log.e(TAG, "Unknown Exception")
-                Result.Error("Something went wrong")
+                Either.Left("Something went wrong")
             }
         }
     }
