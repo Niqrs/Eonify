@@ -76,7 +76,9 @@ object Dependencies {
 
     object Other {
         private const val coilVersion = "2.2.2"
+        private const val arrowCoreVersion = "1.1.2"
 
         const val coil = "io.coil-kt:coil-compose:$coilVersion"
+        const val arrowCore = "io.arrow-kt:arrow-core:$arrowCoreVersion"
     }
 }
