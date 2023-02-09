@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.None
+import arrow.core.Some
 import com.niqr.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,15 +26,13 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repo.userFlow().collect {
-                when(it != null) {
-                    true -> {
+                when(it) {
+                    is Some -> {
                         uiState = uiState.copy(
-                            user = it.toUiState()
+                            user = it.value.toUiState()
                         )
                     }
-                    false -> {
-
-                    }
+                    None -> {}
                 }
             }
         }

@@ -1,5 +1,9 @@
 package com.niqr.profile.data
 
+import arrow.core.getOrElse
+import arrow.core.none
+import arrow.core.some
+import arrow.core.toOption
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -7,6 +11,8 @@ import com.google.firebase.firestore.ktx.snapshots
 import com.niqr.core.AppConstants.NO_VALUE
 import com.niqr.core.FirebaseConstants.BIO
 import com.niqr.core.FirebaseConstants.USERS
+import com.niqr.profile.data.model.FirestoreUser
+import com.niqr.profile.data.model.toUser
 import com.niqr.profile.domain.ProfileRepository
 import com.niqr.profile.domain.User
 import kotlinx.coroutines.flow.map
@@ -20,11 +26,10 @@ class ProfileRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private var googleClient: GoogleSignInClient
 ): ProfileRepository {
-    private val uid = auth.currentUser?.uid ?: NO_VALUE
-    private val userRef = firestore.collection(USERS).document(uid)
+    private val uid = auth.currentUser?.uid?.some() ?: none()
+    private val userRef = firestore.collection(USERS).document(uid.getOrElse { "" })
 
     override val user = User(
-        uid = auth.currentUser?.uid ?: NO_VALUE,
         photoUrl = auth.currentUser?.photoUrl.toString(),
         displayName = auth.currentUser?.displayName ?: NO_VALUE,
         email = auth.currentUser?.email ?: NO_VALUE,
@@ -32,7 +37,7 @@ class ProfileRepositoryImpl @Inject constructor(
     )
 
     override fun userFlow() = userRef.snapshots().map {
-        it.toObject(User::class.java)
+        it.toObject(FirestoreUser::class.java)?.toUser().toOption()
     }
 
     override fun saveBio(bio: String) {
