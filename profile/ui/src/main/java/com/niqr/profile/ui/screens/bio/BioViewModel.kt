@@ -5,8 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.None
+import arrow.core.Some
 import com.niqr.profile.domain.ProfileRepository
-import com.niqr.profile.ui.screens.profile.toUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -25,8 +26,9 @@ class BioViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repo.userFlow().take(1).collect {
-                it?.let {
-                    onBioChange(it.toUiState().bio)
+                when(it) {
+                    None -> {}
+                    is Some -> onBioChange(it.value.bio)
                 }
             }
         }

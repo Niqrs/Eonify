@@ -5,7 +5,7 @@ object Dependencies {
     }
 
     object Android {
-        private const val gradlePluginVersion = "8.1.0-alpha02"
+        private const val gradlePluginVersion = "8.1.0-alpha03"
         const val gradlePlugin = "com.android.tools.build:gradle:$gradlePluginVersion"
 
         private const val activityComposeVersion = "1.6.1"
@@ -76,7 +76,9 @@ object Dependencies {
 
     object Other {
         private const val coilVersion = "2.2.2"
+        private const val arrowCoreVersion = "1.1.2"
 
         const val coil = "io.coil-kt:coil-compose:$coilVersion"
+        const val arrowCore = "io.arrow-kt:arrow-core:$arrowCoreVersion"
     }
 }

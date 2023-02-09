@@ -1,9 +1,9 @@
 package com.niqr.auth.ui.handlers
 
+import arrow.core.Either
 import com.niqr.auth.domain.AuthRepository
 import com.niqr.auth.domain.model.SignInWIthEmailResult
 import com.niqr.auth.ui.handlers.model.EmailSignInResult
-import com.niqr.core_util.Result
 import javax.inject.Inject
 
 class SignInWithEmailHandler @Inject constructor(
@@ -12,11 +12,11 @@ class SignInWithEmailHandler @Inject constructor(
 
     suspend fun signIn(email: String, password: String): EmailSignInResult {
         return when(repo.firebaseSignInWithEmailAndPassword(email, password)) {
-            SignInWIthEmailResult.Success -> Result.Success(Unit)
-            SignInWIthEmailResult.InvalidCredentials -> Result.Error("Invalid email or password")
-            SignInWIthEmailResult.InvalidUser -> Result.Error("User has been disabled or deleted")
-            SignInWIthEmailResult.TooManyRequests -> Result.Error("Too many request. Try again later")
-            SignInWIthEmailResult.UnknownException -> Result.Error("Something went wrong")
+            SignInWIthEmailResult.Success -> Either.Right(Unit)
+            SignInWIthEmailResult.InvalidCredentials -> Either.Left("Invalid email or password")
+            SignInWIthEmailResult.InvalidUser -> Either.Left("User has been disabled or deleted")
+            SignInWIthEmailResult.TooManyRequests -> Either.Left("Too many request. Try again later")
+            SignInWIthEmailResult.UnknownException -> Either.Left("Something went wrong")
         }
     }
 }

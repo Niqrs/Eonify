@@ -1,9 +1,9 @@
 package com.niqr.auth.ui.handlers
 
+import arrow.core.Either
 import com.niqr.auth.domain.AuthRepository
 import com.niqr.auth.domain.model.SendPasswordResetEmailResult
 import com.niqr.auth.ui.handlers.model.EmailForgotResult
-import com.niqr.core_util.Result
 import javax.inject.Inject
 
 class ForgotEmailHandler @Inject constructor(
@@ -12,11 +12,11 @@ class ForgotEmailHandler @Inject constructor(
 
     suspend fun sendEmail(email: String): EmailForgotResult {
         return when(repo.firebaseSendPasswordResetEmail(email)) {
-            SendPasswordResetEmailResult.Success -> Result.Success(Unit)
-            SendPasswordResetEmailResult.InvalidEmail -> Result.Error("The email address is badly formatted")
-            SendPasswordResetEmailResult.InvalidUser -> Result.Error("There is no user with this email")
-            SendPasswordResetEmailResult.TooManyRequests -> Result.Error("Too many request. Try again later")
-            SendPasswordResetEmailResult.UnknownException -> Result.Error("Unknown Exception")
+            SendPasswordResetEmailResult.Success -> Either.Right(Unit)
+            SendPasswordResetEmailResult.InvalidEmail -> Either.Left("The email address is badly formatted")
+            SendPasswordResetEmailResult.InvalidUser -> Either.Left("There is no user with this email")
+            SendPasswordResetEmailResult.TooManyRequests -> Either.Left("Too many request. Try again later")
+            SendPasswordResetEmailResult.UnknownException -> Either.Left("Unknown Exception")
         }
     }
 }

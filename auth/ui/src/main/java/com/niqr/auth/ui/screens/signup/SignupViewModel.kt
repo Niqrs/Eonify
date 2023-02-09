@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.niqr.auth.ui.handlers.GoogleAuthResultHandler
 import com.niqr.auth.ui.handlers.SignUpWithEmailHandler
-import com.niqr.core_util.Result
 import com.niqr.core_util.filterWhitespaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -125,9 +125,9 @@ class SignupViewModel @Inject constructor(
             val authResult = googleAuthResultHandler.handle(result)
             uiState = uiState.copy(isLoading = false)
             when(authResult) {
-                is Result.Success -> _uiEvent.send(SignupEvent.Success)
-                is Result.Error -> {
-                    authResult.data.let {
+                is Either.Right -> _uiEvent.send(SignupEvent.Success)
+                is Either.Left -> {
+                    authResult.value.let {
                         if (!it.isNullOrBlank())
                             _uiEvent.send(SignupEvent.ShowSnackbar(it))
                     }
@@ -165,8 +165,8 @@ class SignupViewModel @Inject constructor(
             password = uiState.password
         )
         when(result) {
-            is Result.Success -> _uiEvent.send(SignupEvent.Success)
-            is Result.Error -> _uiEvent.send(SignupEvent.ShowSnackbar(result.data))
+            is Either.Right -> _uiEvent.send(SignupEvent.Success)
+            is Either.Left -> _uiEvent.send(SignupEvent.ShowSnackbar(result.value))
         }
     }
 

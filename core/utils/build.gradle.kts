@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = ProjectConfig.namespace("core.utils")
 }
+
+dependencies {
+    api(Dependencies.Other.arrowCore)
+}

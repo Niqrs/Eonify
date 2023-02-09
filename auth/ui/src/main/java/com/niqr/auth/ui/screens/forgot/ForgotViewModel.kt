@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import com.niqr.auth.ui.handlers.ForgotEmailHandler
-import com.niqr.core_util.Result
 import com.niqr.core_util.filterWhitespaces
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -67,10 +67,10 @@ class ForgotViewModel @Inject constructor(
 
     private suspend fun sendEmail() {
         when(val result = handler.sendEmail(uiState.email)) {
-            is Result.Success -> {
+            is Either.Right -> {
                 uiState = uiState.copy(isSuccess = true)
             }
-            is Result.Error -> _uiEvent.send(ForgotEvent.ShowSnackbar(result.data))
+            is Either.Left -> _uiEvent.send(ForgotEvent.ShowSnackbar(result.value))
         }
     }
 }
