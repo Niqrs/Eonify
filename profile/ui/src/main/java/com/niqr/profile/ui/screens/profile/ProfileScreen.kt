@@ -34,6 +34,7 @@ internal fun ProfileScreen(
 ) {
     ProfileUiEventHandler(
         uiEvent = uiEvent,
+        onAction = onAction,
         onSignOut = onSignOut,
         onOpenBio = onOpenBio
     )
@@ -66,7 +67,7 @@ internal fun ProfileScreen(
                 )
 
                 ProfileChangeImageButton(
-                    onClick = {}
+                    onClick = { onAction(ProfileAction.OnPickPhoto) }
                 )
             }
 
