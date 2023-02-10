@@ -16,13 +16,13 @@ import com.niqr.profile.ui.components.ProfileRippleTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileTopAppBar(
-    onMoreClick: () -> Unit
+    onExpandClick: () -> Unit
 ) {
     TopAppBar(
         title = { /*No Title*/ },
         actions = {
             CompositionLocalProvider(LocalRippleTheme provides ProfileRippleTheme) {
-                IconButton(onClick = onMoreClick) {
+                IconButton(onClick = onExpandClick) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = null,

@@ -47,12 +47,17 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             ProfileAction.OnSignOut -> onSignOut()
             ProfileAction.OnOpenBio -> onOpenBio()
+            ProfileAction.OnExpandMenu -> onExpandMenu()
+            ProfileAction.OnMenuDismiss -> onMenuDismiss()
             ProfileAction.OnPickImage -> onPickImage()
             is ProfileAction.OnPickImageResult -> onPickImageResult(event.uri)
         }
     }
 
     private fun onSignOut() {
+        uiState = uiState.copy(
+            isMenuExpanded = false
+        )
         viewModelScope.launch(Dispatchers.IO) {
             val result = repo.signOut()
             if (result)
@@ -66,7 +71,22 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    private fun onExpandMenu() {
+        uiState = uiState.copy(
+            isMenuExpanded = true
+        )
+    }
+
+    private fun onMenuDismiss() {
+        uiState = uiState.copy(
+            isMenuExpanded = false
+        )
+    }
+
     private fun onPickImage() {
+        uiState = uiState.copy(
+            isMenuExpanded = false
+        )
         viewModelScope.launch {
             _uiEvent.send(ProfileEvent.PickImage)
         }

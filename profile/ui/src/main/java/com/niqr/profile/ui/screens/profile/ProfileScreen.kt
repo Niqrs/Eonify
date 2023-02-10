@@ -16,6 +16,7 @@ import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
 import com.niqr.profile.ui.screens.profile.components.LogOutButton
 import com.niqr.profile.ui.screens.profile.components.ProfileChangeImageButton
 import com.niqr.profile.ui.screens.profile.components.ProfileDivider
+import com.niqr.profile.ui.screens.profile.components.ProfileDropdownMenu
 import com.niqr.profile.ui.screens.profile.components.ProfileImage
 import com.niqr.profile.ui.screens.profile.components.ProfileSystemUiController
 import com.niqr.profile.ui.screens.profile.components.ProfileTitle
@@ -59,7 +60,14 @@ internal fun ProfileScreen(
                 )
 
                 ProfileTopAppBar(
-                    onMoreClick = {}
+                    onExpandClick = { onAction(ProfileAction.OnExpandMenu) }
+                )
+
+                ProfileDropdownMenu(
+                    expanded = uiState.isMenuExpanded,
+                    onDismissRequest = { onAction(ProfileAction.OnMenuDismiss) },
+                    onSetPhotoClick = { onAction(ProfileAction.OnPickImage) },
+                    onLogOutClick = { onAction(ProfileAction.OnSignOut) }
                 )
 
                 ProfileUsername(
