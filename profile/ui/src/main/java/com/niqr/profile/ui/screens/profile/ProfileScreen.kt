@@ -1,7 +1,6 @@
 package com.niqr.profile.ui.screens.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -9,22 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.niqr.core_ui.theme.EonifyTheme
-import com.niqr.core_ui.theme.setDefaultStatusBarColor
 import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
 import com.niqr.profile.ui.screens.profile.components.LogOutButton
 import com.niqr.profile.ui.screens.profile.components.ProfileChangeImageButton
 import com.niqr.profile.ui.screens.profile.components.ProfileDivider
 import com.niqr.profile.ui.screens.profile.components.ProfileImage
+import com.niqr.profile.ui.screens.profile.components.ProfileSystemUiController
 import com.niqr.profile.ui.screens.profile.components.ProfileTitle
 import com.niqr.profile.ui.screens.profile.components.ProfileTopAppBar
+import com.niqr.profile.ui.screens.profile.components.ProfileUiEventHandler
 import com.niqr.profile.ui.screens.profile.components.ProfileUsername
 import kotlinx.coroutines.flow.Flow
 
@@ -36,24 +32,12 @@ internal fun ProfileScreen(
     onSignOut: () -> Unit,
     onOpenBio: () -> Unit
 ) {
-    val uiController = rememberSystemUiController()
-    val darkTheme = isSystemInDarkTheme()
-
-    LaunchedEffect(true) {
-        uiEvent.collect {
-            when(it) {
-                ProfileEvent.SignOut -> onSignOut()
-                ProfileEvent.OpenBio -> onOpenBio()
-            }
-        }
-    }
-
-    DisposableEffect(uiController) {
-        uiController.setStatusBarColor(Color.Transparent, false)
-        onDispose {
-            uiController.setDefaultStatusBarColor(darkTheme)
-        }
-    }
+    ProfileUiEventHandler(
+        uiEvent = uiEvent,
+        onSignOut = onSignOut,
+        onOpenBio = onOpenBio
+    )
+    ProfileSystemUiController()
 
     Box(
         modifier = Modifier

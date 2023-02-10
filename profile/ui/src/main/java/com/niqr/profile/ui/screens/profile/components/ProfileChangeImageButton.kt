@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.niqr.core_ui.theme.EonifyTheme
+import com.niqr.core_ui.theme.Primary30
 import com.niqr.profile.ui.R
 
 @Composable
@@ -27,7 +28,7 @@ fun BoxScope.ProfileChangeImageButton(
             .size(56.dp)
             .align(BottomEndDocked),
         colors = IconButtonDefaults.filledIconButtonColors(
-            containerColor = EonifyTheme.colorScheme.primaryContainer,
+            containerColor = Primary30,
             contentColor = EonifyTheme.colorScheme.onPrimary
         )
     ) {
