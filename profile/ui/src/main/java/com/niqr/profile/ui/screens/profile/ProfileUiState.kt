@@ -1,6 +1,5 @@
 package com.niqr.profile.ui.screens.profile
 
-import android.util.Log
 import com.niqr.profile.domain.User
 
 data class ProfileUiState(
