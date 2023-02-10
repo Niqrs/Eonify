@@ -5,7 +5,7 @@ object Dependencies {
     }
 
     object Android {
-        private const val gradlePluginVersion = "8.1.0-alpha03"
+        private const val gradlePluginVersion = "8.1.0-alpha04"
         const val gradlePlugin = "com.android.tools.build:gradle:$gradlePluginVersion"
 
         private const val activityComposeVersion = "1.6.1"
@@ -56,6 +56,7 @@ object Dependencies {
         const val bom = "com.google.firebase:firebase-bom:$bomVersion"
         const val auth = "com.google.firebase:firebase-auth-ktx"
         const val firestore = "com.google.firebase:firebase-firestore-ktx"
+        const val storage = "com.google.firebase:firebase-storage-ktx"
         const val messaging = "com.google.firebase:firebase-messaging-ktx"
         const val analytics = "com.google.firebase:firebase-analytics-ktx"
     }

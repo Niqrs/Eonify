@@ -80,7 +80,7 @@ class AuthRepositoryImpl @Inject constructor(
             val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
             if (isNewUser) {
                 val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(name).build();
+                    .setDisplayName(name).build()
                 auth.currentUser?.updateProfile(profileUpdates)?.await()
                 createUserInFirestore()
                 auth.currentUser?.sendEmailVerification()

@@ -10,7 +10,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.platform.LocalContext
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
 import coil.request.ImageRequest
 import com.niqr.profile.ui.R
 
@@ -23,8 +26,9 @@ fun ProfileImage(
             .fillMaxSize()
             .drawImageShadow(),
         model = imageModel(photoUrl),
-        placeholder = ColorPainter(Color(0xFFe4e6e7)),
-        contentDescription = "Profile image"
+        placeholder = ColorPainter(Color(0xFFB1B1B1)),
+        contentDescription = "Profile image",
+        imageLoader = imageLoader()
     )
 }
 
@@ -35,6 +39,26 @@ private fun imageModel(url: String) = ImageRequest.Builder(LocalContext.current)
     .fallback(R.drawable.default_profile_image)
     .crossfade(true)
     .build()
+
+@Composable
+private fun imageLoader(): ImageLoader {
+    val context = LocalContext.current
+
+    return ImageLoader.Builder(context)
+        .memoryCache {
+            MemoryCache.Builder(context)
+                .maxSizePercent(0.25)
+                .build()
+        }
+        .diskCache {
+            DiskCache.Builder()
+                .directory(context.cacheDir.resolve("image_cache"))
+                .maxSizePercent(0.02)
+                .build()
+        }
+        .respectCacheHeaders(false)
+        .build()
+}
 
 private fun Modifier.drawImageShadow() =
     drawWithContent {
