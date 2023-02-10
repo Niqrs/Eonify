@@ -67,7 +67,7 @@ internal fun ProfileScreen(
                 )
 
                 ProfileChangeImageButton(
-                    onClick = { onAction(ProfileAction.OnPickPhoto) }
+                    onClick = { onAction(ProfileAction.OnPickImage) }
                 )
             }
 

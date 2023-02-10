@@ -1,5 +1,6 @@
 package com.niqr.profile.ui.screens.profile
 
+import android.util.Log
 import com.niqr.profile.domain.User
 
 data class ProfileUiState(
@@ -13,10 +14,11 @@ data class UserUiState(
     val bio: String = ""
 )
 
-fun User.toUiState() =
-    UserUiState(
+fun User.toUiState(): UserUiState {
+    return UserUiState(
         photoUrl = this.photoUrl,
         displayName = this.displayName,
         email = this.email,
         bio = this.bio.ifBlank { "Bio" }
     )
+}

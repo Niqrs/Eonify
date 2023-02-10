@@ -10,4 +10,5 @@ object FirebaseConstants {
     const val EMAIL = "email"
     const val PHOTO_URL = "photoUrl"
     const val BIO = "bio"
+    const val USERS_PHOTOS = "usersPhotos"
 }

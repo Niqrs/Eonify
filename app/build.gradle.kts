@@ -70,6 +70,7 @@ dependencies {
     implementation(Dependencies.Firebase.auth)
     implementation(Dependencies.Firebase.firestore)
     implementation(Dependencies.PlayServices.auth)
+    implementation(Dependencies.Firebase.storage)
     implementation(Dependencies.Firebase.messaging)
     implementation(Dependencies.Firebase.analytics)
 

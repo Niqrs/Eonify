@@ -1,11 +1,13 @@
 package com.niqr.profile.ui.screens.profile
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.None
+import arrow.core.Option
 import arrow.core.Some
 import com.niqr.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +47,8 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             ProfileAction.OnSignOut -> onSignOut()
             ProfileAction.OnOpenBio -> onOpenBio()
-            ProfileAction.OnPickPhoto -> onPickPhoto()
+            ProfileAction.OnPickImage -> onPickImage()
+            is ProfileAction.OnPickImageResult -> onPickImageResult(event.uri)
         }
     }
 
@@ -63,9 +66,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun onPickPhoto() {
+    private fun onPickImage() {
         viewModelScope.launch {
-            _uiEvent.send(ProfileEvent.PickPhoto)
+            _uiEvent.send(ProfileEvent.PickImage)
         }
+    }
+
+    private fun onPickImageResult(uri: Option<Uri>) {
+        when(uri) {
+            None -> {}
+            is Some -> { saveImage(uri.value) }
+        }
+    }
+
+    private fun saveImage(image: Uri) {
+        repo.updatePhoto(image)
     }
 }

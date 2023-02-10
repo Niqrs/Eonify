@@ -5,6 +5,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import arrow.core.toOption
 import com.niqr.profile.ui.screens.profile.ProfileAction
 import com.niqr.profile.ui.screens.profile.ProfileEvent
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ fun ProfileUiEventHandler(
 ) {
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { /*onAction(ProfileAction.OnSignOut)*/ }
+        onResult = { onAction(ProfileAction.OnPickImageResult(it.toOption())) }
     )
 
     LaunchedEffect(true) {
@@ -26,7 +27,7 @@ fun ProfileUiEventHandler(
             when(it) {
                 ProfileEvent.SignOut -> onSignOut()
                 ProfileEvent.OpenBio -> onOpenBio()
-                ProfileEvent.PickPhoto -> {
+                ProfileEvent.PickImage -> {
                     photoPickerLauncher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
