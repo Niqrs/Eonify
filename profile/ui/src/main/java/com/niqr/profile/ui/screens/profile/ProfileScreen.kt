@@ -20,6 +20,7 @@ import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.core_ui.theme.setDefaultStatusBarColor
 import com.niqr.profile.ui.screens.profile.components.AccountInfoItem
 import com.niqr.profile.ui.screens.profile.components.LogOutButton
+import com.niqr.profile.ui.screens.profile.components.ProfileChangeImageButton
 import com.niqr.profile.ui.screens.profile.components.ProfileDivider
 import com.niqr.profile.ui.screens.profile.components.ProfileImage
 import com.niqr.profile.ui.screens.profile.components.ProfileTitle
@@ -78,6 +79,10 @@ internal fun ProfileScreen(
 
                 ProfileUsername(
                     name = uiState.user.displayName
+                )
+
+                ProfileChangeImageButton(
+                    onClick = {}
                 )
             }
 
