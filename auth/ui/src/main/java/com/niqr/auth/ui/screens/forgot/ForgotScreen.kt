@@ -1,46 +1,34 @@
 package com.niqr.auth.ui.screens.forgot
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.niqr.auth.ui.R
-import com.niqr.auth.ui.components.AuthButton
-import com.niqr.auth.ui.components.AuthTextField
-import com.niqr.auth.ui.components.HeaderIconContainer
+import com.niqr.auth.ui.screens.forgot.components.ForgotContinueButton
+import com.niqr.auth.ui.screens.forgot.components.ForgotDescription
+import com.niqr.auth.ui.screens.forgot.components.ForgotEmailTextField
+import com.niqr.auth.ui.screens.forgot.components.ForgotHeadIcon
+import com.niqr.auth.ui.screens.forgot.components.ForgotHeader
+import com.niqr.auth.ui.screens.forgot.components.ForgotNavigateUpButton
+import com.niqr.auth.ui.screens.forgot.components.ForgotUiEventHandler
 import com.niqr.core_ui.theme.EonifyTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -51,21 +39,12 @@ internal fun ForgotScreen(
     onNavigateUp: () -> Unit
 ) {
     val snackbar = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = true) {
-        uiEvent.collect {
-            when(it) {
-                ForgotEvent.NavigateUp -> onNavigateUp()
-                is ForgotEvent.ShowSnackbar -> {
-                    scope.launch {
-                        if (snackbar.currentSnackbarData == null)
-                            snackbar.showSnackbar(it.message)
-                    }
-                }
-            }
-        }
-    }
+    ForgotUiEventHandler(
+        uiEvent = uiEvent,
+        snackbarHost = snackbar,
+        onNavigateUp = onNavigateUp
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -81,75 +60,32 @@ internal fun ForgotScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconButton( // Navigate Up Button
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .align(Start),
+            ForgotNavigateUpButton(
                 onClick = { onAction(ForgotAction.OnNavigateUp) }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null,
-                    tint = EonifyTheme.colorScheme.onBackground
-                )
-            }
+            )
             Spacer(modifier = Modifier.height(32.dp))
 
-            HeaderIconContainer( // Icon
-                modifier = Modifier.padding(2.dp)
-            ) {
-                Image(
-                    modifier = Modifier.size(72.dp),
-                    painter = painterResource(id = R.drawable.letter),
-                    contentDescription = null
-                )
-            }
+            ForgotHeadIcon()
             Spacer(modifier = Modifier.height(22.dp))
 
-            Text( // Header
-                text = "Forgot Password",
-                style = EonifyTheme.typography.headlineMedium,
-                color = EonifyTheme.colorScheme.textPrimaryHeader,
-                textAlign = TextAlign.Center
-            )
+            ForgotHeader()
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text( // Description
-                text = "It was popularised in the 1960s with" +
-                        " the release of Letraset sheetscontaining Lorem Ipsum.",
-                style = EonifyTheme.typography.bodyMedium,
-                color = EonifyTheme.colorScheme.textBody
-            )
+            ForgotDescription()
             Spacer(modifier = Modifier.height(32.dp))
 
-            AuthTextField( // Email TextField
+            ForgotEmailTextField(
                 value = uiState.email,
                 onValueChange = { onAction(ForgotAction.OnEmailChange(it)) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !uiState.isLoading and !uiState.isSuccess,
-                hint = "Email"
+                enabled = !uiState.isLoading and !uiState.isSuccess
             )
             Spacer(modifier = Modifier.height(32.dp))
 
-            AnimatedContent(targetState = uiState.isSuccess) {
-                if (!it) {
-                    AuthButton( // AuthButton
-                        onClick = { onAction(ForgotAction.OnContinueClick) },
-                        text = "Continue",
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        loading = uiState.isLoading
-                    )
-                } else {
-                    Text(
-                        text = "Password reset letter has been sent to email",
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        color = EonifyTheme.colorScheme.textPrimaryHeader,
-                        textAlign = TextAlign.Center,
-                        style = EonifyTheme.typography.titleLarge
-                    )
-                }
-            }
+            ForgotContinueButton(
+                isSuccess = uiState.isSuccess,
+                isLoading = uiState.isLoading,
+                onClick = { onAction(ForgotAction.OnContinueClick) }
+            )
             Spacer(modifier = Modifier.height(36.dp))
         }
     }

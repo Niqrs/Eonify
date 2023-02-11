@@ -11,10 +11,13 @@ import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.niqr.core_ui.theme.EonifyTheme
@@ -38,38 +41,75 @@ fun BoxScope.ProfileDropdownMenu(
             onDismissRequest = onDismissRequest,
             modifier = Modifier.background(EonifyTheme.colorScheme.surface),
         ) {
-            DropdownMenuItem(
-                text = { Text("Edit name") },
-                onClick = onEditNameClick,
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = null
-                    )
-                }
+            ProfileDropdownMenuItem(
+                text = "Edit name",
+                icon = Icons.Outlined.Edit,
+                onClick = onEditNameClick
             )
-            DropdownMenuItem(
-                text = { Text("Set Profile Photo") },
-                onClick = onSetPhotoClick,
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(id = R.drawable.outline_add_a_photo_24),
-                        contentDescription = null
-                    )
-                }
+            ProfileDropdownMenuItem(
+                text = "Set Profile Photo",
+                icon = painterResource(id = R.drawable.outline_add_a_photo_24),
+                onClick = onSetPhotoClick
             )
-            DropdownMenuItem(
-                text = { Text("Log Out") },
-                onClick = onLogOutClick,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.ExitToApp,
-                        contentDescription = null
-                    )
-                }
+            ProfileDropdownMenuItem(
+                text = "Log Out",
+                icon = Icons.Outlined.ExitToApp,
+                onClick = onLogOutClick
             )
         }
     }
+}
+
+@Composable
+private fun ProfileDropdownMenuItem(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = text,
+                color = EonifyTheme.colorScheme.textBodyOnSurface
+            )
+        },
+        onClick = onClick,
+        leadingIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+            )
+        },
+        colors = MenuDefaults.itemColors(
+            leadingIconColor = EonifyTheme.colorScheme.textHint
+        )
+    )
+}
+
+@Composable
+private fun ProfileDropdownMenuItem(
+    text: String,
+    icon: Painter,
+    onClick: () -> Unit
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = text,
+                color = EonifyTheme.colorScheme.textBodyOnSurface
+            )
+        },
+        onClick = onClick,
+        leadingIcon = {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        colors = MenuDefaults.itemColors(
+            leadingIconColor = EonifyTheme.colorScheme.textHint
+        )
+    )
 }
