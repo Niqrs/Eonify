@@ -47,6 +47,7 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             ProfileAction.OnSignOut -> onSignOut()
             ProfileAction.OnOpenBio -> onOpenBio()
+            ProfileAction.OnEditName -> onEditName()
             ProfileAction.OnExpandMenu -> onExpandMenu()
             ProfileAction.OnMenuDismiss -> onMenuDismiss()
             ProfileAction.OnPickImage -> onPickImage()
@@ -68,6 +69,12 @@ class ProfileViewModel @Inject constructor(
     private fun onOpenBio() {
         viewModelScope.launch {
             _uiEvent.send(ProfileEvent.OpenBio)
+        }
+    }
+
+    private fun onEditName() {
+        viewModelScope.launch {
+            _uiEvent.send(ProfileEvent.OpenEditName)
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -23,6 +24,7 @@ import com.niqr.profile.ui.R
 fun BoxScope.ProfileDropdownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
+    onEditNameClick: () -> Unit,
     onSetPhotoClick: () -> Unit,
     onLogOutClick: () -> Unit
 ) {
@@ -36,6 +38,17 @@ fun BoxScope.ProfileDropdownMenu(
             onDismissRequest = onDismissRequest,
             modifier = Modifier.background(EonifyTheme.colorScheme.surface),
         ) {
+            DropdownMenuItem(
+                text = { Text("Edit name") },
+                onClick = onEditNameClick,
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = null
+                    )
+                }
+            )
             DropdownMenuItem(
                 text = { Text("Set Profile Photo") },
                 onClick = onSetPhotoClick,
@@ -52,7 +65,7 @@ fun BoxScope.ProfileDropdownMenu(
                 onClick = onLogOutClick,
                 leadingIcon = {
                     Icon(
-                        Icons.Outlined.ExitToApp,
+                        imageVector = Icons.Outlined.ExitToApp,
                         contentDescription = null
                     )
                 }

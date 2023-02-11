@@ -31,13 +31,15 @@ internal fun ProfileScreen(
     uiEvent: Flow<ProfileEvent>,
     onAction: (ProfileAction) -> Unit,
     onSignOut: () -> Unit,
-    onOpenBio: () -> Unit
+    onOpenBio: () -> Unit,
+    onOpenEditName: () -> Unit
 ) {
     ProfileUiEventHandler(
         uiEvent = uiEvent,
         onAction = onAction,
         onSignOut = onSignOut,
-        onOpenBio = onOpenBio
+        onOpenBio = onOpenBio,
+        onOpenEditName = onOpenEditName
     )
     ProfileSystemUiController()
 
@@ -66,6 +68,7 @@ internal fun ProfileScreen(
                 ProfileDropdownMenu(
                     expanded = uiState.isMenuExpanded,
                     onDismissRequest = { onAction(ProfileAction.OnMenuDismiss) },
+                    onEditNameClick = { onAction(ProfileAction.OnEditName) },
                     onSetPhotoClick = { onAction(ProfileAction.OnPickImage) },
                     onLogOutClick = { onAction(ProfileAction.OnSignOut) }
                 )

@@ -15,7 +15,8 @@ fun ProfileUiEventHandler(
     uiEvent: Flow<ProfileEvent>,
     onAction: (ProfileAction) -> Unit,
     onSignOut: () -> Unit,
-    onOpenBio: () -> Unit
+    onOpenBio: () -> Unit,
+    onOpenEditName: () -> Unit
 ) {
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -27,6 +28,7 @@ fun ProfileUiEventHandler(
             when(it) {
                 ProfileEvent.SignOut -> onSignOut()
                 ProfileEvent.OpenBio -> onOpenBio()
+                ProfileEvent.OpenEditName -> onOpenEditName()
                 ProfileEvent.PickImage -> {
                     photoPickerLauncher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
