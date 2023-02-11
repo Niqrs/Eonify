@@ -9,5 +9,6 @@ interface ProfileRepository {
     fun userFlow(): Flow<Option<User>>
     fun updatePhoto(image: Uri)
     fun saveBio(bio: String)
+    fun saveUsername(name: String)
     suspend fun signOut(): Boolean
 }

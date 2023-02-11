@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.profile.ui.screens.bio.components.BioTextField
 import com.niqr.profile.ui.screens.bio.components.BioTopAppBar
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +49,14 @@ fun BioScreen(
                 value = uiState.bio,
                 onValueChange = { onAction(BioAction.OnBioChange(it)) },
                 charactersLeft = uiState.charactersLeft
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "You can add a few lines about yourself.",
+                style = EonifyTheme.typography.bodyMedium,
+                color = EonifyTheme.colorScheme.textHint
             )
         }
     }

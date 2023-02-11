@@ -18,6 +18,7 @@ fun ProfileTextField(
     modifier: Modifier = Modifier,
     label: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    singleLine: Boolean = false
 ) {
     TextField(
         value = value,
@@ -26,6 +27,7 @@ fun ProfileTextField(
         textStyle = EonifyTheme.typography.bodyLarge.copy(textAlign = TextAlign.Start),
         placeholder = { label?.let { Text(text = it) } },
         trailingIcon = trailingIcon,
+        singleLine = singleLine,
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
             textColor = EonifyTheme.colorScheme.textFieldText,

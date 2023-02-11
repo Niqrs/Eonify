@@ -14,7 +14,11 @@ internal fun NavController.navigateToProfileScreen() {
     }
 }
 
-internal fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit, onOpenBio: () -> Unit) {
+internal fun NavGraphBuilder.profileScreen(
+    onSignOut: () -> Unit,
+    onOpenBio: () -> Unit,
+    onOpenEditName: () -> Unit
+) {
     composable(ProfileScreenRoutePattern) {
         val viewModel: ProfileViewModel = hiltViewModel()
 
@@ -23,7 +27,8 @@ internal fun NavGraphBuilder.profileScreen(onSignOut: () -> Unit, onOpenBio: () 
             uiEvent = viewModel.uiEvent,
             onAction = viewModel::onAction,
             onSignOut = onSignOut,
-            onOpenBio = onOpenBio
+            onOpenBio = onOpenBio,
+            onOpenEditName = onOpenEditName
         )
     }
 }

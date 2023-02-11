@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.niqr.profile.ui.screens.bio.bioScreen
 import com.niqr.profile.ui.screens.bio.navigateToBioScreen
+import com.niqr.profile.ui.screens.editName.editNameScreen
+import com.niqr.profile.ui.screens.editName.navigateToEditNameScreen
 import com.niqr.profile.ui.screens.profile.ProfileScreenRoutePattern
 import com.niqr.profile.ui.screens.profile.profileScreen
 
@@ -27,9 +29,14 @@ fun NavGraphBuilder.profileGraph(
     ) {
         profileScreen(
             onSignOut = onSignOut,
-            onOpenBio = navController::navigateToBioScreen
+            onOpenBio = navController::navigateToBioScreen,
+            onOpenEditName = navController::navigateToEditNameScreen
         )
         bioScreen(
+            onNavigateUp = navController::navigateUp,
+            onApply = navController::navigateUp
+        )
+        editNameScreen(
             onNavigateUp = navController::navigateUp,
             onApply = navController::navigateUp
         )
