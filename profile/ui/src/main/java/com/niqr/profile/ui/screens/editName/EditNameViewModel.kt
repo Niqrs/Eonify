@@ -52,7 +52,7 @@ class EditNameViewModel @Inject constructor(
     private fun onFirstNameChange(value: String) {
         viewModelScope.launch {
             uiState = uiState.copy(
-                firstName = value.filterWhitespaces()
+                firstName = value.filterWhitespaces().take(32)
             )
         }
     }
@@ -60,7 +60,7 @@ class EditNameViewModel @Inject constructor(
     private fun onOptionalNameChange(value: String) {
         viewModelScope.launch {
             uiState = uiState.copy(
-                optionalName = value.filterWhitespaces()
+                optionalName = value.filterWhitespaces().take(32)
             )
         }
     }
@@ -73,10 +73,11 @@ class EditNameViewModel @Inject constructor(
 
     private fun onApply() {
         viewModelScope.launch {
-            //TODO
             if (uiState.firstName.isBlank()) {
                 _uiEvent.send(EditNameEvent.ShowSnackbar("First name can't be empty"))
             } else {
+                val displayName = "${uiState.firstName} ${uiState.optionalName}"
+                repo.saveUsername(displayName)
                 _uiEvent.send(EditNameEvent.OnApply)
             }
         }

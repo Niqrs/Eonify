@@ -13,6 +13,7 @@ import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.storage.FirebaseStorage
 import com.niqr.core.AppConstants.NO_VALUE
 import com.niqr.core.FirebaseConstants.BIO
+import com.niqr.core.FirebaseConstants.DISPLAY_NAME
 import com.niqr.core.FirebaseConstants.PHOTO_URL
 import com.niqr.core.FirebaseConstants.USERS
 import com.niqr.core.FirebaseConstants.USERS_PHOTOS
@@ -60,6 +61,13 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override fun saveBio(bio: String) {
         userRef.update(BIO, bio)
+    }
+
+    override fun saveUsername(name: String) {
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(name).build()
+        auth.currentUser?.updateProfile(profileUpdates)
+        userRef.update(DISPLAY_NAME, name)
     }
 
     override suspend fun signOut(): Boolean {
