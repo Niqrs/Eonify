@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,6 +47,7 @@ internal fun ProfileScreen(
     Box(
         modifier = Modifier
             .background(EonifyTheme.colorScheme.background)
+            .navigationBarsPadding()
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
