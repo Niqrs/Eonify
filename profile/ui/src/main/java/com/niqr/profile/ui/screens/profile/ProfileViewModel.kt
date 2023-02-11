@@ -73,6 +73,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun onEditName() {
+        uiState = uiState.copy(
+            isMenuExpanded = false
+        )
         viewModelScope.launch {
             _uiEvent.send(ProfileEvent.OpenEditName)
         }
