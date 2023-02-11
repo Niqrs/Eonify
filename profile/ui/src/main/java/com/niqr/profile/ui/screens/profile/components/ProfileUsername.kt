@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.niqr.core_ui.theme.EonifyTheme
@@ -24,7 +25,7 @@ fun BoxScope.ProfileUsername(
         modifier = Modifier
             .align(Alignment.BottomStart)
             .padding(horizontal = 16.dp)
-            .padding(bottom = 14.dp)
+            .padding(bottom = 26.dp)
             .fillMaxWidth(),
     ) {
         Text(
@@ -32,7 +33,9 @@ fun BoxScope.ProfileUsername(
             style = EonifyTheme.typography.headlineSmall,
             fontWeight = FontWeight.W500,
             letterSpacing = 0.2.sp,
-            color = Color.White
+            color = Color.White,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(4.dp))
     }

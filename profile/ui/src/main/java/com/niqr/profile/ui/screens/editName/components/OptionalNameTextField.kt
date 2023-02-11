@@ -15,5 +15,6 @@ fun OptionalNameTextField(
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         label = "Optional name",
+        singleLine = true
     )
 }

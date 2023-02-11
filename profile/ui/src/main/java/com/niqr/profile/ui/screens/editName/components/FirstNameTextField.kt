@@ -15,5 +15,6 @@ fun FirstNameTextField(
         onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth(),
         label = "First name",
+        singleLine = true
     )
 }
