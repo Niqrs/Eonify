@@ -36,6 +36,9 @@ fun NavGraphBuilder.profileGraph(
             onNavigateUp = navController::navigateUp,
             onApply = navController::navigateUp
         )
-        editNameScreen()
+        editNameScreen(
+            onNavigateUp = navController::navigateUp,
+            onApply = navController::navigateUp
+        )
     }
 }

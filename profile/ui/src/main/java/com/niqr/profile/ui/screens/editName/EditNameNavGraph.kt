@@ -1,6 +1,6 @@
 package com.niqr.profile.ui.screens.editName
 
-import androidx.compose.material3.Text
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,8 +13,19 @@ internal fun NavController.navigateToEditNameScreen() {
     }
 }
 
-internal fun NavGraphBuilder.editNameScreen() {
+internal fun NavGraphBuilder.editNameScreen(
+    onNavigateUp: () -> Unit,
+    onApply: () -> Unit
+) {
     composable(EditNameScreenRoutePattern) {
-        Text(text = "Edit Name")
+        val viewModel: EditNameViewModel = hiltViewModel()
+
+        EditNameScreen(
+            uiState = viewModel.uiState,
+            uiEvent = viewModel.uiEvent,
+            onAction = viewModel::onAction,
+            onNavigateUp = onNavigateUp,
+            onApply = onApply
+        )
     }
 }
