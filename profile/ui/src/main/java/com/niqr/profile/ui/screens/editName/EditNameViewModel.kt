@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.None
 import arrow.core.Some
+import com.niqr.core_util.filterWhitespaces
 import com.niqr.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -29,7 +30,7 @@ class EditNameViewModel @Inject constructor(
                 when(it) {
                     None -> {}
                     is Some -> {
-                        initName(it.value.bio)
+                        initName(it.value.displayName)
                     }
                 }
             }
@@ -51,7 +52,7 @@ class EditNameViewModel @Inject constructor(
     private fun onFirstNameChange(value: String) {
         viewModelScope.launch {
             uiState = uiState.copy(
-                firstName = value
+                firstName = value.filterWhitespaces()
             )
         }
     }
@@ -59,7 +60,7 @@ class EditNameViewModel @Inject constructor(
     private fun onOptionalNameChange(value: String) {
         viewModelScope.launch {
             uiState = uiState.copy(
-                optionalName = value
+                optionalName = value.filterWhitespaces()
             )
         }
     }
@@ -73,7 +74,11 @@ class EditNameViewModel @Inject constructor(
     private fun onApply() {
         viewModelScope.launch {
             //TODO
-            _uiEvent.send(EditNameEvent.OnApply)
+            if (uiState.firstName.isBlank()) {
+                _uiEvent.send(EditNameEvent.ShowSnackbar("First name can't be empty"))
+            } else {
+                _uiEvent.send(EditNameEvent.OnApply)
+            }
         }
     }
 
