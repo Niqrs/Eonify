@@ -47,7 +47,7 @@ fun EditNameScreen(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
         },
-        contentColor = EonifyTheme.colorScheme.background
+        containerColor = EonifyTheme.colorScheme.background
     ) { paddingValues ->
 
         Column(
