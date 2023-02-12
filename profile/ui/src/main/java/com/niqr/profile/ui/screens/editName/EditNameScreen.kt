@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.profile.ui.screens.editName.components.EditNameTopAppBar
 import com.niqr.profile.ui.screens.editName.components.EditNameUiEventHandler
 import com.niqr.profile.ui.screens.editName.components.FirstNameTextField
@@ -45,7 +46,8 @@ fun EditNameScreen(
         },
         snackbarHost = {
             SnackbarHost(snackbarHostState)
-        }
+        },
+        contentColor = EonifyTheme.colorScheme.background
     ) { paddingValues ->
 
         Column(
