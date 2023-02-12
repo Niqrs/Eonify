@@ -1,5 +1,6 @@
 package com.niqr.profile.ui.screens.bio
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.niqr.core_ui.theme.EonifyTheme
 import com.niqr.profile.ui.screens.bio.components.BioDescription
 import com.niqr.profile.ui.screens.bio.components.BioTextField
 import com.niqr.profile.ui.screens.bio.components.BioTopAppBar
@@ -30,6 +32,7 @@ fun BioScreen(
 
     Column(
         modifier = Modifier
+            .background(EonifyTheme.colorScheme.background)
             .fillMaxSize()
     ) {
         BioTopAppBar(
