@@ -32,7 +32,7 @@ To build and run the app locally, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/<your_username>/Eonify.git
+   git clone https://github.com/Niqrs/Eonify.git
    ```
 2. Open the project in Android Studio
 3. Connect the app to Firebase Authentication and Firestore using your own credentials
